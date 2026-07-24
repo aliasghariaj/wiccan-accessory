@@ -1,8 +1,21 @@
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
 export default function Home() {
   return (
-    <main>
-      <h1>Wiccan Accessory</h1>
-      <p>The world of handmade gothic art.</p>
-    </main>
+    <>
+      <Header />
+
+      <main>
+        <h2>
+          Enter the Dark Realm
+        </h2>
+
+        <p>
+          Handmade Gothic & Medieval Art
+        </p>
+      </main>
+      <Footer />
+    </>
   );
 }
