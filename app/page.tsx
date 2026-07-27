@@ -1,21 +1,22 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/layout/Header";
+import Hero from "@/components/home/Hero";
+import Collections from "@/components/home/Collections";
+import BrandStory from "@/components/home/BrandStory";
+import BoneRealm from "@/components/realm/bone/BoneRealm";
 
 export default function Home() {
   return (
     <>
       <Header />
+        <main>
 
-      <main>
-        <h2>
-          Enter the Dark Realm
-        </h2>
+          <Hero />
 
-        <p>
-          Handmade Gothic & Medieval Art
-        </p>
-      </main>
-      <Footer />
+          <BrandStory />
+
+          <BoneRealm />
+
+        </main>
     </>
   );
 }

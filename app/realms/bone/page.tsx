@@ -1,11 +1,11 @@
-import RealmHero from "@/components/RealmHero";
+import RealmHero from "@/components/home/Hero";
 
 
 export default function BoneRealm(){
 
 return(
 
-<RealmHero
+<Hero
 
 title="The Bone Realm"
 

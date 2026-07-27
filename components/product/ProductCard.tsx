@@ -1,0 +1,85 @@
+import Image from "next/image";
+import RealmButton from "@/components/ui/RealmButton";
+
+type ProductCardProps = {
+  image: string;
+  title: string;
+  code: string;
+  material: string;
+  price: string;
+};
+
+export default function ProductCard({
+  image,
+  title,
+  code,
+  material,
+  price,
+}: ProductCardProps) {
+  return (
+    <div
+      className="
+      group
+      overflow-hidden
+      rounded-3xl
+      border
+      border-white/10
+      bg-[#111]
+      transition-all
+      duration-500
+      hover:border-yellow-600
+      hover:shadow-[0_0_35px_rgba(198,161,91,0.25)]
+      "
+    >
+      <div className="relative h-80 overflow-hidden">
+
+        <Image
+          src={image}
+          alt={title}
+          fill
+          className="
+          object-cover
+          transition-transform
+          duration-700
+          group-hover:scale-110
+          "
+        />
+
+      </div>
+
+      <div className="space-y-4 p-6">
+
+        <h3 className="text-2xl font-bold">
+
+          {title}
+
+        </h3>
+
+        <p className="text-sm text-gray-400">
+
+          Product Code : {code}
+
+        </p>
+
+        <p className="text-gray-300">
+
+          Material : {material}
+
+        </p>
+
+        <p className="text-2xl font-bold text-yellow-600">
+
+          {price}
+
+        </p>
+
+        <RealmButton>
+
+          مشاهده داستان
+
+        </RealmButton>
+
+      </div>
+    </div>
+  );
+}
