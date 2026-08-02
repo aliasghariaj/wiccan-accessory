@@ -1,22 +1,33 @@
 import Header from "@/components/layout/Header";
 import Hero from "@/components/home/Hero";
-import Collections from "@/components/home/Collections";
 import BrandStory from "@/components/home/BrandStory";
-import BoneRealm from "@/components/realm/bone/BoneRealm";
+import WiccanRealm from "@/components/realm/wiccan/WiccanRealm";
+import GothicRealm from "@/components/realm/gothic/GothicRealm";
+import MermaidRealm from "@/components/realm/mermaid/MermaidRealm";
+import GrungeRealm from "@/components/realm/grunge/GrungeRealm";
+import DecorativeRealm from "@/components/realm/decorative/DecorativeRealm";
 
 export default function Home() {
   return (
     <>
       <Header />
-        <main>
+      <main>
 
-          <Hero />
+        <Hero />
 
-          <BrandStory />
+        <BrandStory />
 
-          <BoneRealm />
+        <WiccanRealm />
 
-        </main>
+        <GothicRealm />
+
+        <MermaidRealm />
+
+        <GrungeRealm />
+
+        <DecorativeRealm />
+
+      </main>
     </>
   );
 }

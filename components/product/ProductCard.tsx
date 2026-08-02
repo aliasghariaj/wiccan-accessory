@@ -7,6 +7,9 @@ type ProductCardProps = {
   code: string;
   material: string;
   price: string;
+  craftingDays?: number;
+  inStock?: boolean;
+  discountPercent?: number;
 };
 
 export default function ProductCard({
@@ -15,11 +18,15 @@ export default function ProductCard({
   code,
   material,
   price,
+  craftingDays,
+  inStock = true,
+  discountPercent,
 }: ProductCardProps) {
   return (
     <div
       className="
       group
+      relative
       overflow-hidden
       rounded-3xl
       border
@@ -31,8 +38,21 @@ export default function ProductCard({
       hover:shadow-[0_0_35px_rgba(198,161,91,0.25)]
       "
     >
-      <div className="relative h-80 overflow-hidden">
+      {/* نشان‌ها (بالای عکس) */}
+      <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
+        {!inStock && (
+          <span className="rounded-full bg-red-900/80 px-3 py-1 text-xs text-white">
+            ناموجود
+          </span>
+        )}
+        {discountPercent && (
+          <span className="rounded-full bg-yellow-700/90 px-3 py-1 text-xs text-black">
+            {discountPercent}% تخفیف
+          </span>
+        )}
+      </div>
 
+      <div className="relative h-80 overflow-hidden">
         <Image
           src={image}
           alt={title}
@@ -44,39 +64,32 @@ export default function ProductCard({
           group-hover:scale-110
           "
         />
-
       </div>
 
       <div className="space-y-4 p-6">
 
-        <h3 className="text-2xl font-bold">
-
-          {title}
-
-        </h3>
+        <h3 className="text-2xl font-bold">{title}</h3>
 
         <p className="text-sm text-gray-400">
-
           Product Code : {code}
-
         </p>
 
         <p className="text-gray-300">
-
           Material : {material}
-
         </p>
 
+        {craftingDays && (
+          <p className="text-sm text-gray-400">
+            زمان ساخت: {craftingDays} روز کاری
+          </p>
+        )}
+
         <p className="text-2xl font-bold text-yellow-600">
-
           {price}
-
         </p>
 
         <RealmButton>
-
-          مشاهده داستان
-
+          {inStock ? "مشاهده داستان" : "اطلاع بده وقتی موجود شد"}
         </RealmButton>
 
       </div>
