@@ -1,12 +1,14 @@
 import Image from "next/image";
 import RealmButton from "@/components/ui/RealmButton";
+import { translateMaterial } from "@/lib/materials";
+import { formatPriceFa } from "@/lib/formatPrice";
 
 type ProductCardProps = {
   image: string;
   title: string;
   code: string;
   material: string;
-  price: string;
+  priceValue: number;
   craftingDays?: number;
   inStock?: boolean;
   discountPercent?: number;
@@ -17,7 +19,7 @@ export default function ProductCard({
   title,
   code,
   material,
-  price,
+  priceValue,
   craftingDays,
   inStock = true,
   discountPercent,
@@ -75,7 +77,7 @@ export default function ProductCard({
         </p>
 
         <p className="text-gray-300">
-          Material : {material}
+          جنس: {translateMaterial(material)}
         </p>
 
         {craftingDays && (
@@ -85,7 +87,7 @@ export default function ProductCard({
         )}
 
         <p className="text-2xl font-bold text-yellow-600">
-          {price}
+          {formatPriceFa(priceValue)}
         </p>
 
         <RealmButton>

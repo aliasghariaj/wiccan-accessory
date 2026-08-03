@@ -1,14 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 
 export default function Header() {
   const [collectionsOpen, setCollectionsOpen] = useState(false);
   const [portfolioOpen, setPortfolioOpen] = useState(false);
 
-  // این متغیر موقتاً دستیه — بعداً وقتی ورود واقعی ساختیم، از سیستم Auth میاد
-  const isLoggedIn = false;
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setIsLoggedIn(!!data.session);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session);
+    });
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 z-50 w-full border-b border-white/10 bg-black/40 backdrop-blur-md">
@@ -68,6 +83,7 @@ export default function Header() {
           <a href="/blog">وبلاگ</a>
           <a href="/contact">تماس با ما</a>
           <a href="/about">درباره ما</a>
+          <Link href="/international">سفارش خارجی</Link>
 
         </nav>
 
@@ -75,13 +91,18 @@ export default function Header() {
         <div className="flex shrink-0 items-center gap-3">
 
           {isLoggedIn ? (
-            <a href="/cart" className="rounded-lg border border-yellow-700 px-3 py-2 text-sm hover:bg-yellow-700 hover:text-black transition">
-              🛒 سبد خرید
-            </a>
+            <>
+              <Link href="/profile" className="rounded-lg border border-white/20 px-3 py-2 text-sm hover:border-yellow-600 hover:text-yellow-500 transition">
+                👤 پروفایل
+              </Link>
+              <Link href="/cart" className="rounded-lg border border-yellow-700 px-3 py-2 text-sm hover:bg-yellow-700 hover:text-black transition">
+                🛒 سبد خرید
+              </Link>
+            </>
           ) : (
-            <a href="/login" className="rounded-lg border border-yellow-700 px-3 py-2 text-sm hover:bg-yellow-700 hover:text-black transition">
+            <Link href="/login" className="rounded-lg border border-yellow-700 px-3 py-2 text-sm hover:bg-yellow-700 hover:text-black transition">
               ثبت‌نام | ورود
-            </a>
+            </Link>
           )}
 
           <button className="shrink-0 rounded-lg border border-yellow-700 px-3 py-2 text-sm hover:bg-yellow-700 hover:text-black transition md:px-4 md:text-base">
