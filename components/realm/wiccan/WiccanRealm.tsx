@@ -2,6 +2,7 @@ import Container from "@/components/common/Container";
 import SectionTitle from "@/components/common/SectionTitle";
 import RealmButton from "@/components/ui/RealmButton";
 import ProductCard from "@/components/product/ProductCard";
+import RealmProducts from "@/components/realm/RealmProducts";
 
 export default function WiccanRealm() {
   return (
@@ -36,31 +37,7 @@ export default function WiccanRealm() {
             </RealmButton>
           </div>
 
-          <div className="mt-24 grid w-full max-w-6xl justify-items-center gap-10 md:grid-cols-2 xl:grid-cols-3">
-            <ProductCard
-              image="/images/products/wiccan-necklace.jpg"
-              title="Sacred Grove"
-              code="WI-001"
-              material="Bone • Wood • Leather"
-              price="1,950,000 تومان"
-            />
-
-            <ProductCard
-              image="/images/products/wiccan-necklace.jpg"
-              title="Earth Ritual"
-              code="WI-002"
-              material="Bone • Crystal"
-              price="2,250,000 تومان"
-            />
-
-            <ProductCard
-              image="/images/products/wiccan-necklace.jpg"
-              title="Ancient Grove"
-              code="WI-003"
-              material="Bone • Feather"
-              price="2,450,000 تومان"
-            />
-          </div>
+          <RealmProducts realm="Wiccan" />
 
         </div>
       </Container>

@@ -2,6 +2,7 @@ import Container from "@/components/common/Container";
 import SectionTitle from "@/components/common/SectionTitle";
 import RealmButton from "@/components/ui/RealmButton";
 import ProductCard from "@/components/product/ProductCard";
+import RealmProducts from "@/components/realm/RealmProducts";
 
 export default function MermaidRealm() {
   return (
@@ -36,31 +37,7 @@ export default function MermaidRealm() {
             </RealmButton>
           </div>
 
-          <div className="mt-24 grid w-full max-w-6xl justify-items-center gap-10 md:grid-cols-2 xl:grid-cols-3">
-            <ProductCard
-              image="/images/products/mermaid-necklace.jpg"
-              title="Siren's Pearl"
-              code="MM-001"
-              material="Pearl • Silver"
-              price="2,100,000 تومان"
-            />
-
-            <ProductCard
-              image="/images/products/mermaid-necklace.jpg"
-              title="Ocean's Whisper"
-              code="MM-002"
-              material="Abalone • Silver"
-              price="2,300,000 تومان"
-            />
-
-            <ProductCard
-              image="/images/products/mermaid-necklace.jpg"
-              title="Deep Tide"
-              code="MM-003"
-              material="Sea Glass • Silver"
-              price="2,000,000 تومان"
-            />
-          </div>
+          <RealmProducts realm="Mermaid" />
 
         </div>
       </Container>

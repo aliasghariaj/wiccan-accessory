@@ -2,6 +2,7 @@ import Container from "@/components/common/Container";
 import SectionTitle from "@/components/common/SectionTitle";
 import RealmButton from "@/components/ui/RealmButton";
 import ProductCard from "@/components/product/ProductCard";
+import RealmProducts from "@/components/realm/RealmProducts";
 
 export default function GothicRealm() {
   return (
@@ -36,31 +37,7 @@ export default function GothicRealm() {
             </RealmButton>
           </div>
 
-          <div className="mt-24 grid w-full max-w-6xl justify-items-center gap-10 md:grid-cols-2 xl:grid-cols-3">
-            <ProductCard
-              image="/images/products/gothic-necklace.jpg"
-              title="Midnight Lace"
-              code="GT-001"
-              material="Silver • Onyx"
-              price="2,100,000 تومان"
-            />
-
-            <ProductCard
-              image="/images/products/gothic-necklace.jpg"
-              title="Shadow Rose"
-              code="GT-002"
-              material="Silver • Garnet"
-              price="2,350,000 تومان"
-            />
-
-            <ProductCard
-              image="/images/products/gothic-necklace.jpg"
-              title="Veil of Night"
-              code="GT-003"
-              material="Silver • Obsidian"
-              price="2,500,000 تومان"
-            />
-          </div>
+          <RealmProducts realm="Gothic" />
 
         </div>
       </Container>

@@ -1,7 +1,11 @@
+"use client";
+
 import Image from "next/image";
-import RealmButton from "@/components/ui/RealmButton";
+import Link from "next/link";
+import { useState } from "react";
 import { translateMaterial } from "@/lib/materials";
 import { formatPriceFa } from "@/lib/formatPrice";
+import { addToCart } from "@/lib/cart";
 
 type ProductCardProps = {
   image: string;
@@ -24,11 +28,23 @@ export default function ProductCard({
   inStock = true,
   discountPercent,
 }: ProductCardProps) {
+  const [added, setAdded] = useState(false);
+
+  function handleAddToCart(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart({ code, title, image, price: priceValue });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  }
+
   return (
-    <div
+    <Link
+      href={`/product/${code}`}
       className="
       group
       relative
+      block
       overflow-hidden
       rounded-3xl
       border
@@ -90,11 +106,15 @@ export default function ProductCard({
           {formatPriceFa(priceValue)}
         </p>
 
-        <RealmButton>
-          {inStock ? "مشاهده داستان" : "اطلاع بده وقتی موجود شد"}
-        </RealmButton>
+        <button
+          onClick={handleAddToCart}
+          disabled={!inStock}
+          className="w-full rounded-xl border border-yellow-600 bg-black/30 px-4 py-3 text-sm text-white backdrop-blur-sm transition-all duration-300 hover:bg-yellow-700 hover:text-black disabled:opacity-40"
+        >
+          {added ? "✅ اضافه شد" : inStock ? "افزودن به سبد" : "ناموجود"}
+        </button>
 
       </div>
-    </div>
+    </Link>
   );
 }

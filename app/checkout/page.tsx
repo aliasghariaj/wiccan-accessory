@@ -69,8 +69,22 @@ export default function CheckoutPage() {
   function handleContinue() {
     if (!validate()) return;
 
-    // فعلاً فقط میریم مرحله‌ی بعد (پرداخت) — جلسه‌ی بعد می‌سازیمش
-    alert("اطلاعات معتبره! مرحله‌ی بعد: پرداخت (جلسه‌ی بعدی می‌سازیمش)");
+    const orderInfo = {
+      fullName,
+      phone,
+      postalCode,
+      city,
+      address,
+      shippingMethod,
+      isInCity,
+      shippingCost,
+      productsTotal: total,
+      grandTotal,
+      items: cart,
+    };
+
+    sessionStorage.setItem("pendingOrder", JSON.stringify(orderInfo));
+    router.push("/checkout/payment");
   }
 
   return (

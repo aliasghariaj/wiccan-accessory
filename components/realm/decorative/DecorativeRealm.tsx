@@ -2,6 +2,7 @@ import Container from "@/components/common/Container";
 import SectionTitle from "@/components/common/SectionTitle";
 import RealmButton from "@/components/ui/RealmButton";
 import ProductCard from "@/components/product/ProductCard";
+import RealmProducts from "@/components/realm/RealmProducts";
 
 export default function DecorativeRealm() {
   return (
@@ -36,31 +37,7 @@ export default function DecorativeRealm() {
             </RealmButton>
           </div>
 
-          <div className="mt-24 grid w-full max-w-6xl justify-items-center gap-10 md:grid-cols-2 xl:grid-cols-3">
-            <ProductCard
-              image="/images/products/decorative-item.jpg"
-              title="Crystal Cluster"
-              code="DC-001"
-              material="Amethyst • Wood"
-              price="1,600,000 تومان"
-            />
-
-            <ProductCard
-              image="/images/products/decorative-item.jpg"
-              title="Moonlit Bowl"
-              code="DC-002"
-              material="Ceramic • Silver"
-              price="1,450,000 تومان"
-            />
-
-            <ProductCard
-              image="/images/products/decorative-item.jpg"
-              title="Ritual Candle Holder"
-              code="DC-003"
-              material="Iron • Stone"
-              price="1,700,000 تومان"
-            />
-          </div>
+          <RealmProducts realm="Decorative" />
 
         </div>
       </Container>

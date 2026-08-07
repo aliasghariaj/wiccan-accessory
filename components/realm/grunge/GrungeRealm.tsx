@@ -2,6 +2,7 @@ import Container from "@/components/common/Container";
 import SectionTitle from "@/components/common/SectionTitle";
 import RealmButton from "@/components/ui/RealmButton";
 import ProductCard from "@/components/product/ProductCard";
+import RealmProducts from "@/components/realm/RealmProducts";
 
 export default function GrungeRealm() {
   return (
@@ -36,31 +37,7 @@ export default function GrungeRealm() {
             </RealmButton>
           </div>
 
-          <div className="mt-24 grid w-full max-w-6xl justify-items-center gap-10 md:grid-cols-2 xl:grid-cols-3">
-            <ProductCard
-              image="/images/products/grunge-necklace.jpg"
-              title="Flannel Nights"
-              code="GR-001"
-              material="Leather • Chain"
-              price="1,750,000 تومان"
-            />
-
-            <ProductCard
-              image="/images/products/grunge-necklace.jpg"
-              title="Rebel Static"
-              code="GR-002"
-              material="Denim • Iron"
-              price="1,850,000 تومان"
-            />
-
-            <ProductCard
-              image="/images/products/grunge-necklace.jpg"
-              title="Nirvana Echo"
-              code="GR-003"
-              material="Leather • Silver"
-              price="1,950,000 تومان"
-            />
-          </div>
+          <RealmProducts realm="Grunge" />
 
         </div>
       </Container>
