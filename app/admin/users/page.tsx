@@ -6,6 +6,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import { supabase } from "@/lib/supabase";
+import AdminNav from "@/components/admin/AdminNav";
 
 const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
 
@@ -60,6 +61,8 @@ export default function AdminUsersPage() {
           <h1 className="mb-12 text-center text-4xl font-bold">
             کاربران ثبت‌نام‌شده
           </h1>
+
+          <AdminNav />
 
           {loading ? (
             <p className="text-center text-gray-400">در حال بارگذاری...</p>

@@ -8,15 +8,18 @@ import Container from "@/components/common/Container";
 import { supabase } from "@/lib/supabase";
 import { formatPriceFa } from "@/lib/formatPrice";
 
-const CARD_NUMBER = "6037-XXXX-XXXX-XXXX"; // شماره کارت واقعی ارکیده بعداً جایگزین میشه
-const CARD_OWNER = "ارکیده ..."; // اسم صاحب کارت
-
 export default function PaymentPage() {
   const router = useRouter();
   const [orderInfo, setOrderInfo] = useState<any>(null);
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
+
+  const [zarinpalEnabled, setZarinpalEnabled] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"card-to-card" | "zarinpal">("card-to-card");
+  const [redirecting, setRedirecting] = useState(false);
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardOwner, setCardOwner] = useState("");
 
   useEffect(() => {
     const stored = sessionStorage.getItem("pendingOrder");
@@ -25,6 +28,17 @@ export default function PaymentPage() {
       return;
     }
     setOrderInfo(JSON.parse(stored));
+
+    supabase
+      .from("site_settings")
+      .select("*")
+      .eq("id", 1)
+      .single()
+      .then(({ data }) => {
+        if (data?.zarinpal_enabled) setZarinpalEnabled(true);
+        setCardNumber(data?.card_number ?? "");
+        setCardOwner(data?.card_owner_name ?? "");
+      });
   }, [router]);
 
   async function handleSubmit() {
@@ -39,7 +53,6 @@ export default function PaymentPage() {
     const { data: sessionData } = await supabase.auth.getSession();
     const userId = sessionData.session?.user.id ?? null;
 
-    // آپلود عکس رسید
     const fileExt = receiptFile.name.split(".").pop();
     const fileName = `${Date.now()}.${fileExt}`;
 
@@ -57,7 +70,6 @@ export default function PaymentPage() {
       .from("receipts")
       .getPublicUrl(fileName);
 
-    // ثبت سفارش توی جدول orders
     const { error: insertError } = await supabase.from("orders").insert({
       user_id: userId,
       full_name: orderInfo.fullName,
@@ -86,6 +98,30 @@ export default function PaymentPage() {
     router.push("/checkout/success");
   }
 
+  async function handleZarinpalPayment() {
+    setRedirecting(true);
+    setMessage("");
+
+    const res = await fetch("/api/zarinpal/request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount: orderInfo.grandTotal,
+        description: `سفارش از Wiccan Accessory`,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (data.gatewayUrl) {
+      sessionStorage.setItem("pendingOrder", JSON.stringify(orderInfo));
+      window.location.href = data.gatewayUrl;
+    } else {
+      setMessage(data.error || "خطا در اتصال به درگاه پرداخت.");
+      setRedirecting(false);
+    }
+  }
+
   if (!orderInfo) return null;
 
   return (
@@ -96,7 +132,7 @@ export default function PaymentPage() {
         <Container>
 
           <h1 className="mb-12 text-center text-4xl font-bold">
-            پرداخت کارت‌به‌کارت
+            پرداخت
           </h1>
 
           <div className="mx-auto max-w-xl space-y-8 rounded-2xl border border-white/10 bg-white/5 p-8">
@@ -106,34 +142,79 @@ export default function PaymentPage() {
               <p className="mb-4 text-3xl font-bold text-yellow-500">
                 {formatPriceFa(orderInfo.grandTotal)}
               </p>
-              <p className="mb-1 text-sm text-gray-400">شماره کارت</p>
-              <p className="mb-2 text-xl font-mono tracking-wider">{CARD_NUMBER}</p>
-              <p className="text-sm text-gray-400">به نام {CARD_OWNER}</p>
+              {paymentMethod === "card-to-card" && (
+                <>
+                  <p className="mb-1 text-sm text-gray-400">شماره کارت</p>
+                  <p className="mb-2 text-xl font-mono tracking-wider">
+                    {cardNumber || "هنوز تنظیم نشده"}
+                  </p>
+                  <p className="text-sm text-gray-400">به نام {cardOwner || "—"}</p>
+                </>
+              )}
             </div>
 
-            <div>
-              <label className="mb-2 block text-sm text-gray-400">
-                آپلود عکس رسید پرداخت *
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setReceiptFile(e.target.files?.[0] ?? null)}
-                className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white file:mr-4 file:rounded-lg file:border-0 file:bg-yellow-700 file:px-4 file:py-2 file:text-black"
-              />
-            </div>
-
-            {message && (
-              <p className="text-sm text-red-400">{message}</p>
+            {zarinpalEnabled && (
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setPaymentMethod("card-to-card")}
+                  className={`flex-1 rounded-lg border px-4 py-3 transition ${
+                    paymentMethod === "card-to-card"
+                      ? "border-yellow-600 bg-yellow-700/20 text-yellow-500"
+                      : "border-white/10 text-gray-300"
+                  }`}
+                >
+                  کارت‌به‌کارت
+                </button>
+                <button
+                  onClick={() => setPaymentMethod("zarinpal")}
+                  className={`flex-1 rounded-lg border px-4 py-3 transition ${
+                    paymentMethod === "zarinpal"
+                      ? "border-yellow-600 bg-yellow-700/20 text-yellow-500"
+                      : "border-white/10 text-gray-300"
+                  }`}
+                >
+                  پرداخت آنلاین (زرین‌پال)
+                </button>
+              </div>
             )}
 
-            <button
-              onClick={handleSubmit}
-              disabled={submitting}
-              className="w-full rounded-xl border border-yellow-600 bg-black/30 px-8 py-4 text-white transition-all duration-300 hover:bg-yellow-700 hover:text-black disabled:opacity-50"
-            >
-              {submitting ? "در حال ثبت سفارش..." : "ثبت سفارش"}
-            </button>
+            {paymentMethod === "card-to-card" ? (
+              <>
+                <div>
+                  <label className="mb-2 block text-sm text-gray-400">
+                    آپلود عکس رسید پرداخت *
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setReceiptFile(e.target.files?.[0] ?? null)}
+                    className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white file:mr-4 file:rounded-lg file:border-0 file:bg-yellow-700 file:px-4 file:py-2 file:text-black"
+                  />
+                </div>
+
+                {message && <p className="text-sm text-red-400">{message}</p>}
+
+                <button
+                  onClick={handleSubmit}
+                  disabled={submitting}
+                  className="w-full rounded-xl border border-yellow-600 bg-black/30 px-8 py-4 text-white transition-all duration-300 hover:bg-yellow-700 hover:text-black disabled:opacity-50"
+                >
+                  {submitting ? "در حال ثبت سفارش..." : "ثبت سفارش"}
+                </button>
+              </>
+            ) : (
+              <>
+                {message && <p className="text-sm text-red-400">{message}</p>}
+
+                <button
+                  onClick={handleZarinpalPayment}
+                  disabled={redirecting}
+                  className="w-full rounded-xl border border-yellow-600 bg-black/30 px-8 py-4 text-white transition-all duration-300 hover:bg-yellow-700 hover:text-black disabled:opacity-50"
+                >
+                  {redirecting ? "در حال انتقال به درگاه..." : "پرداخت و ادامه"}
+                </button>
+              </>
+            )}
 
           </div>
 

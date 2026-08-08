@@ -25,11 +25,13 @@ export function addToCart(item: Omit<CartItem, "quantity">) {
   }
 
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  window.dispatchEvent(new Event("cartUpdated"));
 }
 
 export function removeFromCart(code: string) {
   const cart = getCart().filter((i) => i.code !== code);
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  window.dispatchEvent(new Event("cartUpdated"));
 }
 
 export function updateQuantity(code: string, quantity: number) {
@@ -39,4 +41,9 @@ export function updateQuantity(code: string, quantity: number) {
     item.quantity = Math.max(1, quantity);
   }
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  window.dispatchEvent(new Event("cartUpdated"));
+}
+
+export function getCartCount(): number {
+  return getCart().reduce((sum, item) => sum + item.quantity, 0);
 }
