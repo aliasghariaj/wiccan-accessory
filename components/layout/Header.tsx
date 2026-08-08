@@ -64,39 +64,39 @@ export default function Header() {
             onMouseLeave={() => setCollectionsOpen(false)}
           >
             <button className="flex items-center gap-1">کالکشن‌ها</button>
-
+            
             {collectionsOpen && (
               <div className="absolute top-full right-0 pt-2">
                 <div className="min-w-[180px] rounded-lg border border-white/10 bg-black/90 p-2 backdrop-blur-md">
                   <Link
-                    href="/collections/gothic"
+                    href="/realms/wiccan"
                     className="block rounded px-3 py-2 hover:bg-white/10"
                   >
-                    گاتیک
+                    Wiccan
                   </Link>
                   <Link
-                    href="/collections/bone"
+                    href="/realms/gothic"
                     className="block rounded px-3 py-2 hover:bg-white/10"
                   >
-                    استخوان
+                    Gothic
                   </Link>
                   <Link
-                    href="/collections/chainmail"
+                    href="/realms/mermaid"
                     className="block rounded px-3 py-2 hover:bg-white/10"
                   >
-                    چین‌میل
+                    Mermaid
                   </Link>
                   <Link
-                    href="/collections/medieval"
+                    href="/realms/grunge"
                     className="block rounded px-3 py-2 hover:bg-white/10"
                   >
-                    مدیوال
+                    Grunge
                   </Link>
                   <Link
-                    href="/collections/crystal"
+                    href="/realms/decorative"
                     className="block rounded px-3 py-2 hover:bg-white/10"
                   >
-                    سنگ‌های جادویی
+                    Decorative
                   </Link>
                 </div>
               </div>

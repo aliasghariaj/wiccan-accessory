@@ -1,5 +1,11 @@
 import WiccanRealm from "@/components/realm/wiccan/WiccanRealm";
+import RealmShopSection from "@/components/realm/RealmShopSection";
 
 export default function WiccanRealmPage() {
-  return <WiccanRealm />;
+  return (
+    <>
+      <WiccanRealm />
+      <RealmShopSection realm="Wiccan" />
+    </>
+  );
 }
