@@ -154,7 +154,7 @@ export default function AdminPage() {
             پنل مدیریت — افزودن محصول
           </h1>
 
-Hello Butterfly of a copy of the copy          <AdminNav />
+          <AdminNav />
 
           <div className="mx-auto max-w-xl space-y-5 rounded-2xl border border-white/10 bg-white/5 p-8">
             <div>

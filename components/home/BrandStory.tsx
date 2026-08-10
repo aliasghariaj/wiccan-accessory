@@ -3,7 +3,7 @@ import SectionTitle from "@/components/common/SectionTitle";
 
 export default function BrandStory() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#090909]">
+    <section id="brand-story" className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#090909]">
 
       <Container className="relative z-10">
 

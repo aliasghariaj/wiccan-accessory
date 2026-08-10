@@ -24,7 +24,15 @@ type Product = {
 };
 
 const realms = ["همه", "Wiccan", "Gothic", "Mermaid", "Grunge", "Decorative"];
-const types = ["همه", "دستبند", "گردنبند", "گوشواره", "سنگ", "چین‌میل", "استخوان"];
+const types = [
+  "همه",
+  "دستبند",
+  "گردنبند",
+  "گوشواره",
+  "سنگ",
+  "چین‌میل",
+  "استخوان",
+];
 const sortOptions = [
   { value: "newest", label: "جدیدترین" },
   { value: "cheap-first", label: "ارزان به گران" },
@@ -39,6 +47,7 @@ export default function ShopPage() {
   const [selectedType, setSelectedType] = useState("همه");
   const [sortBy, setSortBy] = useState("newest");
   const [searchQuery, setSearchQuery] = useState("");
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
     async function loadProducts() {
@@ -55,7 +64,9 @@ export default function ShopPage() {
     let result = products.filter((p) => {
       const realmMatch = selectedRealm === "همه" || p.realm === selectedRealm;
       const typeMatch = selectedType === "همه" || p.type === selectedType;
-      const searchMatch = p.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const searchMatch = p.title
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
       return realmMatch && typeMatch && searchMatch;
     });
 
@@ -65,7 +76,8 @@ export default function ShopPage() {
       result = [...result].sort((a, b) => b.price_value - a.price_value);
     } else {
       result = [...result].sort(
-        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
       );
     }
 
@@ -78,10 +90,7 @@ export default function ShopPage() {
 
       <main className="min-h-screen bg-[#090909] pt-32 pb-24 text-white">
         <Container>
-
-          <h1 className="mb-8 text-center text-5xl font-bold">
-            فروشگاه
-          </h1>
+          <h1 className="mb-8 text-center text-5xl font-bold">فروشگاه</h1>
 
           <div className="mb-12 flex justify-center">
             <input
@@ -94,11 +103,19 @@ export default function ShopPage() {
           </div>
 
           <div className="flex flex-col gap-10 md:flex-row">
+            <button
+              onClick={() => setFiltersOpen(!filtersOpen)}
+              className="mb-4 flex w-full items-center justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm md:hidden"
+            >
+              <span>فیلترها و مرتب‌سازی</span>
+              <span>{filtersOpen ? "▲" : "▼"}</span>
+            </button>
 
-            <aside className="w-full shrink-0 space-y-8 md:w-56">
-
+            <aside className={`w-full shrink-0 space-y-8 md:w-56 md:block ${filtersOpen ? "block" : "hidden"}`}>
               <div>
-                <h2 className="mb-4 text-lg font-bold text-yellow-600">دسته‌بندی</h2>
+                <h2 className="mb-4 text-lg font-bold text-yellow-600">
+                  دسته‌بندی
+                </h2>
                 <div className="flex flex-row flex-wrap gap-2 md:flex-col">
                   {realms.map((realm) => (
                     <button
@@ -117,7 +134,9 @@ export default function ShopPage() {
               </div>
 
               <div>
-                <h2 className="mb-4 text-lg font-bold text-yellow-600">نوع محصول</h2>
+                <h2 className="mb-4 text-lg font-bold text-yellow-600">
+                  نوع محصول
+                </h2>
                 <div className="flex flex-row flex-wrap gap-2 md:flex-col">
                   {types.map((type) => (
                     <button
@@ -136,7 +155,9 @@ export default function ShopPage() {
               </div>
 
               <div>
-                <h2 className="mb-4 text-lg font-bold text-yellow-600">مرتب‌سازی</h2>
+                <h2 className="mb-4 text-lg font-bold text-yellow-600">
+                  مرتب‌سازی
+                </h2>
                 <div className="flex flex-row flex-wrap gap-2 md:flex-col">
                   {sortOptions.map((option) => (
                     <button
@@ -153,17 +174,20 @@ export default function ShopPage() {
                   ))}
                 </div>
               </div>
-
             </aside>
 
             {loading ? (
-              <p className="w-full py-20 text-center text-gray-400">در حال بارگذاری...</p>
+              <p className="w-full py-20 text-center text-gray-400">
+                در حال بارگذاری...
+              </p>
             ) : filteredProducts.length > 0 ? (
               <div className="grid w-full justify-items-center gap-10 sm:grid-cols-2 xl:grid-cols-3">
                 {filteredProducts.map((product) => (
                   <ProductCard
                     key={product.id}
-                    image={product.image_url ?? "/images/products/placeholder.jpg"}
+                    image={
+                      product.image_url ?? "/images/products/placeholder.jpg"
+                    }
                     title={product.title}
                     code={product.code}
                     material={(product.materials ?? []).join(" • ")}
@@ -179,9 +203,7 @@ export default function ShopPage() {
                 محصولی با این فیلتر پیدا نشد.
               </p>
             )}
-
           </div>
-
         </Container>
       </main>
 

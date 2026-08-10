@@ -61,7 +61,7 @@ export default function RealmShopSection({ realm }: { realm: string }) {
   }, [products, selectedType, sortBy]);
 
   return (
-    <section className="bg-[#090909] py-24 text-white">
+    <section id="shop-section" className="bg-[#090909] py-24 text-white">
       <Container>
 
         <h2 className="mb-12 text-center text-4xl font-bold">

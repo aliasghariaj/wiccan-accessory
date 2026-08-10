@@ -11,6 +11,7 @@ export default function Header() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -52,6 +53,17 @@ export default function Header() {
           ☾ WICCAN
         </div>
 
+        {/* دکمه‌ی همبرگری (فقط موبایل) */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="flex flex-col gap-1.5 md:hidden"
+          aria-label="منو"
+        >
+          <span className="h-0.5 w-6 bg-white" />
+          <span className="h-0.5 w-6 bg-white" />
+          <span className="h-0.5 w-6 bg-white" />
+        </button>
+
         {/* منو */}
         <nav className="hidden shrink-0 items-center gap-6 md:flex">
           <Link href="/">خانه</Link>
@@ -64,7 +76,7 @@ export default function Header() {
             onMouseLeave={() => setCollectionsOpen(false)}
           >
             <button className="flex items-center gap-1">کالکشن‌ها</button>
-            
+
             {collectionsOpen && (
               <div className="absolute top-full right-0 pt-2">
                 <div className="min-w-[180px] rounded-lg border border-white/10 bg-black/90 p-2 backdrop-blur-md">
@@ -173,6 +185,97 @@ export default function Header() {
           </button>
         </div>
       </div>
+
+      {/* منوی موبایل */}
+      {mobileMenuOpen && (
+        <div className="border-t border-white/10 bg-black/95 px-6 py-6 md:hidden">
+          <nav className="flex flex-col gap-4 text-right">
+            <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+              خانه
+            </Link>
+            <Link href="/shop" onClick={() => setMobileMenuOpen(false)}>
+              فروشگاه
+            </Link>
+            <Link
+              href="/realms/wiccan"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Wiccan
+            </Link>
+            <Link
+              href="/realms/gothic"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Gothic
+            </Link>
+            <Link
+              href="/realms/mermaid"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Mermaid
+            </Link>
+            <Link
+              href="/realms/grunge"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Grunge
+            </Link>
+            <Link
+              href="/realms/decorative"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Decorative
+            </Link>
+            <Link
+              href="/portfolio/accessory"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              پورتفولیو اکسسوری
+            </Link>
+            <Link
+              href="/portfolio/music"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              پورتفولیو موسیقی
+            </Link>
+            <Link href="/blog" onClick={() => setMobileMenuOpen(false)}>
+              وبلاگ
+            </Link>
+            <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
+              تماس با ما
+            </Link>
+            <Link href="/about" onClick={() => setMobileMenuOpen(false)}>
+              درباره ما
+            </Link>
+            <Link
+              href="/international"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              سفارش خارجی
+            </Link>
+
+            <div className="mt-4 flex flex-col gap-3 border-t border-white/10 pt-4">
+              {isLoggedIn ? (
+                <>
+                  <Link
+                    href="/profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    👤 پروفایل
+                  </Link>
+                  <Link href="/cart" onClick={() => setMobileMenuOpen(false)}>
+                    🛒 سبد خرید ({cartCount})
+                  </Link>
+                </>
+              ) : (
+                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                  ثبت‌نام | ورود
+                </Link>
+              )}
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
