@@ -8,26 +8,52 @@ import Container from "@/components/common/Container";
 import { supabase } from "@/lib/supabase";
 import { formatPriceFa } from "@/lib/formatPrice";
 
+type OrderItem = {
+  code: string;
+  title: string;
+  image: string;
+  price: number;
+  quantity: number;
+};
+
+type OrderInfo = {
+  fullName: string;
+  phone: string;
+  postalCode: string;
+  city: string;
+  address: string;
+  shippingMethod: string;
+  isInCity: boolean;
+  shippingCost: number;
+  productsTotal: number;
+  grandTotal: number;
+  items: OrderItem[];
+};
+
 export default function PaymentPage() {
   const router = useRouter();
-  const [orderInfo, setOrderInfo] = useState<any>(null);
+  const [orderInfo, setOrderInfo] = useState<OrderInfo | null>(() => {
+    if (typeof window === "undefined") return null;
+    const stored = sessionStorage.getItem("pendingOrder");
+    return stored ? (JSON.parse(stored) as OrderInfo) : null;
+  });
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
   const [zarinpalEnabled, setZarinpalEnabled] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"card-to-card" | "zarinpal">("card-to-card");
+  const [paymentMethod, setPaymentMethod] = useState<
+    "card-to-card" | "zarinpal"
+  >("card-to-card");
   const [redirecting, setRedirecting] = useState(false);
   const [cardNumber, setCardNumber] = useState("");
   const [cardOwner, setCardOwner] = useState("");
 
   useEffect(() => {
-    const stored = sessionStorage.getItem("pendingOrder");
-    if (!stored) {
+    if (!orderInfo) {
       router.push("/cart");
       return;
     }
-    setOrderInfo(JSON.parse(stored));
 
     supabase
       .from("site_settings")
@@ -39,9 +65,11 @@ export default function PaymentPage() {
         setCardNumber(data?.card_number ?? "");
         setCardOwner(data?.card_owner_name ?? "");
       });
-  }, [router]);
+  }, [orderInfo, router]);
 
   async function handleSubmit() {
+    if (!orderInfo) return;
+
     if (!receiptFile) {
       setMessage("لطفاً عکس رسید پرداخت رو آپلود کن.");
       return;
@@ -93,12 +121,26 @@ export default function PaymentPage() {
       return;
     }
 
+    const itemsList = orderInfo.items
+      .map((i) => `• ${i.title} × ${i.quantity}`)
+      .join("\n");
+
+    fetch("/api/telegram/notify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: `🛍 <b>سفارش جدید (کارت‌به‌کارت)</b>\n\n👤 ${orderInfo.fullName}\n📞 ${orderInfo.phone}\n🏙 ${orderInfo.city}\n\n${itemsList}\n\n💰 مبلغ: ${orderInfo.grandTotal.toLocaleString()} تومان\n\n⚠️ رسید پرداخت رو توی پنل ادمین بررسی کن.`,
+      }),
+    });
+
     sessionStorage.removeItem("pendingOrder");
     localStorage.removeItem("wiccan_cart");
     router.push("/checkout/success");
   }
 
   async function handleZarinpalPayment() {
+    if (!orderInfo) return;
+
     setRedirecting(true);
     setMessage("");
 
@@ -128,15 +170,14 @@ export default function PaymentPage() {
     <>
       <Header />
 
-      <main className="min-h-screen bg-[#090909] pt-40 pb-24 text-white" dir="rtl">
+      <main
+        className="min-h-screen bg-[#090909] pt-40 pb-24 text-white"
+        dir="rtl"
+      >
         <Container>
-
-          <h1 className="mb-12 text-center text-4xl font-bold">
-            پرداخت
-          </h1>
+          <h1 className="mb-12 text-center text-4xl font-bold">پرداخت</h1>
 
           <div className="mx-auto max-w-xl space-y-8 rounded-2xl border border-white/10 bg-white/5 p-8">
-
             <div className="rounded-xl border border-yellow-700 bg-yellow-900/10 p-6 text-center">
               <p className="mb-2 text-sm text-gray-400">مبلغ قابل پرداخت</p>
               <p className="mb-4 text-3xl font-bold text-yellow-500">
@@ -148,7 +189,9 @@ export default function PaymentPage() {
                   <p className="mb-2 text-xl font-mono tracking-wider">
                     {cardNumber || "هنوز تنظیم نشده"}
                   </p>
-                  <p className="text-sm text-gray-400">به نام {cardOwner || "—"}</p>
+                  <p className="text-sm text-gray-400">
+                    به نام {cardOwner || "—"}
+                  </p>
                 </>
               )}
             </div>
@@ -187,7 +230,9 @@ export default function PaymentPage() {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setReceiptFile(e.target.files?.[0] ?? null)}
+                    onChange={(e) =>
+                      setReceiptFile(e.target.files?.[0] ?? null)
+                    }
                     className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white file:mr-4 file:rounded-lg file:border-0 file:bg-yellow-700 file:px-4 file:py-2 file:text-black"
                   />
                 </div>
@@ -215,9 +260,7 @@ export default function PaymentPage() {
                 </button>
               </>
             )}
-
           </div>
-
         </Container>
       </main>
 

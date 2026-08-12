@@ -35,6 +35,18 @@ export default function LoginPage() {
           id: data.user.id,
           username,
         });
+
+        const { count } = await supabase
+          .from("profiles")
+          .select("*", { count: "exact", head: true });
+
+        fetch("/api/telegram/notify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: `🆕 <b>ثبت‌نام جدید</b>\n\n👤 یوزرنیم: ${username || "—"}\n📧 ${email}\n\n👥 تعداد کل کاربران: ${count ?? "?"}`,
+          }),
+        });
       }
 
       setErrorMsg("ثبت‌نام موفق! ایمیلت رو برای تایید چک کن.");
@@ -63,7 +75,6 @@ export default function LoginPage() {
       <main className="min-h-screen bg-[#090909] pt-40 pb-24 text-white">
         <Container>
           <div className="mx-auto max-w-md" dir="rtl">
-
             {/* تب‌های ورود/ثبت‌نام */}
             <div className="mb-10 flex justify-center gap-4">
               <button
@@ -89,7 +100,6 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-5 rounded-2xl border border-white/10 bg-white/5 p-8">
-
               {mode === "register" && (
                 <div>
                   <label className="mb-2 block text-sm text-gray-400">
@@ -128,20 +138,20 @@ export default function LoginPage() {
                 />
               </div>
 
-              {errorMsg && (
-                <p className="text-sm text-red-400">{errorMsg}</p>
-              )}
+              {errorMsg && <p className="text-sm text-red-400">{errorMsg}</p>}
 
               <button
                 onClick={handleSubmit}
                 disabled={loading}
                 className="mt-8 w-full rounded-xl border border-yellow-600 bg-black/30 px-8 py-4 text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-yellow-500 hover:bg-yellow-700 hover:text-black disabled:opacity-50"
               >
-                {loading ? "لطفاً صبر کن..." : mode === "login" ? "ورود" : "ایجاد حساب"}
+                {loading
+                  ? "لطفاً صبر کن..."
+                  : mode === "login"
+                    ? "ورود"
+                    : "ایجاد حساب"}
               </button>
-
             </div>
-
           </div>
         </Container>
       </main>

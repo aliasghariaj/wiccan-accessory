@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
 import "./globals.css";
+import SupportButton from "@/components/common/SupportButton";
 
 const vazirmatn = Vazirmatn({
   subsets: ["arabic"],
@@ -9,8 +10,7 @@ const vazirmatn = Vazirmatn({
 
 export const metadata: Metadata = {
   title: "Wiccan Accessory",
-  description:
-    "Handmade Gothic, Medieval and Fantasy Accessories by Orkideh",
+  description: "Handmade Gothic, Medieval and Fantasy Accessories by Orkideh",
 };
 
 export default function RootLayout({
@@ -24,7 +24,10 @@ export default function RootLayout({
       dir="rtl"
       className={`${vazirmatn.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <SupportButton />
+      </body>
     </html>
   );
 }

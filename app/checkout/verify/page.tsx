@@ -7,6 +7,28 @@ import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import { supabase } from "@/lib/supabase";
 
+type OrderItem = {
+  code: string;
+  title: string;
+  image: string;
+  price: number;
+  quantity: number;
+};
+
+type OrderInfo = {
+  fullName: string;
+  phone: string;
+  postalCode: string;
+  city: string;
+  address: string;
+  shippingMethod: string;
+  isInCity: boolean;
+  shippingCost: number;
+  productsTotal: number;
+  grandTotal: number;
+  items: OrderItem[];
+};
+
 export default function VerifyPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -23,7 +45,7 @@ export default function VerifyPage() {
         return;
       }
 
-      const orderInfo = JSON.parse(stored);
+      const orderInfo = JSON.parse(stored) as OrderInfo;
 
       const res = await fetch("/api/zarinpal/verify", {
         method: "POST",
@@ -58,6 +80,18 @@ export default function VerifyPage() {
         grand_total: orderInfo.grandTotal,
         payment_method: "zarinpal",
         status: "confirmed",
+      });
+
+      const itemsList = orderInfo.items
+        .map((i) => `• ${i.title} × ${i.quantity}`)
+        .join("\n");
+
+      await fetch("/api/telegram/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: `✅ <b>سفارش جدید (پرداخت آنلاین موفق)</b>\n\n👤 ${orderInfo.fullName}\n📞 ${orderInfo.phone}\n🏙 ${orderInfo.city}\n\n${itemsList}\n\n💰 مبلغ: ${orderInfo.grandTotal.toLocaleString()} تومان\n\nپرداخت تایید شده، آماده‌ی ساخت کن! 🌙`,
+        }),
       });
 
       sessionStorage.removeItem("pendingOrder");
