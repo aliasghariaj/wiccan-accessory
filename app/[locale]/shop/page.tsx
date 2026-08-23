@@ -6,6 +6,8 @@ import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import ProductCard from "@/components/product/ProductCard";
 import { supabase } from "@/lib/supabase";
+import { useLocale } from "next-intl";
+import { getDisplayTitle, getDisplayMaterials } from "@/lib/productDisplay";
 
 type Product = {
   id: string;
@@ -42,6 +44,7 @@ const sortOptions = [
 export default function ShopPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const locale = useLocale();
 
   const [selectedRealm, setSelectedRealm] = useState("همه");
   const [selectedType, setSelectedType] = useState("همه");
@@ -111,7 +114,9 @@ export default function ShopPage() {
               <span>{filtersOpen ? "▲" : "▼"}</span>
             </button>
 
-            <aside className={`w-full shrink-0 space-y-8 md:w-56 md:block ${filtersOpen ? "block" : "hidden"}`}>
+            <aside
+              className={`w-full shrink-0 space-y-8 md:w-56 md:block ${filtersOpen ? "block" : "hidden"}`}
+            >
               <div>
                 <h2 className="mb-4 text-lg font-bold text-yellow-600">
                   دسته‌بندی
@@ -188,9 +193,9 @@ export default function ShopPage() {
                     image={
                       product.image_url ?? "/images/products/placeholder.jpg"
                     }
-                    title={product.title}
+                    title={getDisplayTitle(product, locale)}
                     code={product.code}
-                    material={(product.materials ?? []).join(" • ")}
+                    material={getDisplayMaterials(product, locale).join(" • ")}
                     priceValue={product.price_value}
                     craftingDays={product.crafting_days}
                     inStock={product.in_stock}

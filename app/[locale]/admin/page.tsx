@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import { supabase } from "@/lib/supabase";
 import AdminNav from "@/components/admin/AdminNav";
+import { translateMaterialsToEnglish } from "@/lib/materialsEn";
 
 const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
 
@@ -40,7 +41,9 @@ export default function AdminPage() {
 
   const [codeNumber, setCodeNumber] = useState("");
   const [title, setTitle] = useState("");
+  const [titleEn, setTitleEn] = useState("");
   const [description, setDescription] = useState("");
+  const [descriptionEn, setDescriptionEn] = useState("");
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
   const [color, setColor] = useState("");
   const [priceValue, setPriceValue] = useState("");
@@ -111,6 +114,9 @@ export default function AdminPage() {
       title,
       description,
       materials: selectedMaterials,
+      title_en: titleEn,
+      description_en: descriptionEn,
+      materials_en: translateMaterialsToEnglish(selectedMaterials),
       color,
       price_value: Number(priceValue),
       realm,
@@ -129,6 +135,8 @@ export default function AdminPage() {
       setTitle("");
       setDescription("");
       setSelectedMaterials([]);
+      setTitleEn("");
+      setDescriptionEn("");
       setColor("");
       setPriceValue("");
       setImageFile(null);
@@ -204,12 +212,37 @@ export default function AdminPage() {
 
             <div>
               <label className="mb-2 block text-sm text-gray-400">
+                عنوان محصول (انگلیسی)
+              </label>
+              <input
+                value={titleEn}
+                onChange={(e) => setTitleEn(e.target.value)}
+                dir="ltr"
+                className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm text-gray-400">
                 توضیحات
               </label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
+                className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm text-gray-400">
+                توضیحات (انگلیسی)
+              </label>
+              <textarea
+                value={descriptionEn}
+                onChange={(e) => setDescriptionEn(e.target.value)}
+                rows={3}
+                dir="ltr"
                 className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
               />
             </div>

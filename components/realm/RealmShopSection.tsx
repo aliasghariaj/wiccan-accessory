@@ -4,12 +4,16 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import ProductCard from "@/components/product/ProductCard";
 import Container from "@/components/common/Container";
+import { useLocale } from "next-intl";
+import { getDisplayTitle, getDisplayMaterials } from "@/lib/productDisplay";
 
 type Product = {
   id: string;
   code: string;
   title: string;
   materials: string[] | null;
+  title_en?: string | null;
+  materials_en?: string[] | null;
   price_value: number;
   type: string;
   image_url: string | null;
@@ -19,7 +23,15 @@ type Product = {
   created_at: string;
 };
 
-const types = ["همه", "دستبند", "گردنبند", "گوشواره", "سنگ", "چین‌میل", "استخوان"];
+const types = [
+  "همه",
+  "دستبند",
+  "گردنبند",
+  "گوشواره",
+  "سنگ",
+  "چین‌میل",
+  "استخوان",
+];
 const sortOptions = [
   { value: "newest", label: "جدیدترین" },
   { value: "cheap-first", label: "ارزان به گران" },
@@ -27,6 +39,7 @@ const sortOptions = [
 ];
 
 export default function RealmShopSection({ realm }: { realm: string }) {
+  const locale = useLocale();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,7 +48,10 @@ export default function RealmShopSection({ realm }: { realm: string }) {
 
   useEffect(() => {
     async function loadProducts() {
-      const { data } = await supabase.from("products").select("*").eq("realm", realm);
+      const { data } = await supabase
+        .from("products")
+        .select("*")
+        .eq("realm", realm);
       if (data) setProducts(data as Product[]);
       setLoading(false);
     }
@@ -44,7 +60,7 @@ export default function RealmShopSection({ realm }: { realm: string }) {
 
   const filteredProducts = useMemo(() => {
     let result = products.filter(
-      (p) => selectedType === "همه" || p.type === selectedType
+      (p) => selectedType === "همه" || p.type === selectedType,
     );
 
     if (sortBy === "cheap-first") {
@@ -53,7 +69,8 @@ export default function RealmShopSection({ realm }: { realm: string }) {
       result = [...result].sort((a, b) => b.price_value - a.price_value);
     } else {
       result = [...result].sort(
-        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
       );
     }
 
@@ -63,7 +80,6 @@ export default function RealmShopSection({ realm }: { realm: string }) {
   return (
     <section id="shop-section" className="bg-[#090909] py-24 text-white">
       <Container>
-
         <h2 className="mb-12 text-center text-4xl font-bold">
           همه‌ی محصولات این Realm
         </h2>
@@ -112,9 +128,9 @@ export default function RealmShopSection({ realm }: { realm: string }) {
               <ProductCard
                 key={product.id}
                 image={product.image_url ?? "/images/products/placeholder.jpg"}
-                title={product.title}
+                title={getDisplayTitle(product, locale)}
                 code={product.code}
-                material={(product.materials ?? []).join(" • ")}
+                material={getDisplayMaterials(product, locale).join(" • ")}
                 priceValue={product.price_value}
                 craftingDays={product.crafting_days}
                 inStock={product.in_stock}
@@ -123,7 +139,6 @@ export default function RealmShopSection({ realm }: { realm: string }) {
             ))}
           </div>
         )}
-
       </Container>
     </section>
   );

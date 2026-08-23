@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import ProductCard from "@/components/product/ProductCard";
+import { useLocale } from "next-intl";
+import { getDisplayTitle, getDisplayMaterials } from "@/lib/productDisplay";
 
 type Product = {
   id: string;
@@ -17,6 +19,7 @@ type Product = {
 };
 
 export default function RealmProducts({ realm }: { realm: string }) {
+  const locale = useLocale();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -54,9 +57,9 @@ export default function RealmProducts({ realm }: { realm: string }) {
         <ProductCard
           key={product.id}
           image={product.image_url ?? "/images/products/placeholder.jpg"}
-          title={product.title}
+          title={getDisplayTitle(product, locale)}
           code={product.code}
-          material={(product.materials ?? []).join(" • ")}
+          material={getDisplayMaterials(product, locale).join(" • ")}
           priceValue={product.price_value}
           craftingDays={product.crafting_days}
           inStock={product.in_stock}

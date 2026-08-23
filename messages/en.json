@@ -4,6 +4,8 @@
     "shop": "Shop",
     "collections": "Collections",
     "portfolio": "Portfolio",
+    "portfolioAccessory": "Accessory",
+    "portfolioMusic": "Music",
     "blog": "Blog",
     "contact": "Contact",
     "about": "About",
@@ -11,5 +13,13 @@
     "login": "Sign up | Login",
     "cart": "Cart",
     "profile": "Profile"
+  },
+  "product": {
+    "material": "Material",
+    "craftingDays": "Crafting time",
+    "days": "business days",
+    "addToCart": "Add to cart",
+    "outOfStock": "Out of stock",
+    "added": "Added"
   }
 }

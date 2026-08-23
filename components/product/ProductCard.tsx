@@ -6,6 +6,7 @@ import { useState } from "react";
 import { translateMaterial } from "@/lib/materials";
 import { formatPriceFa } from "@/lib/formatPrice";
 import { addToCart } from "@/lib/cart";
+import { useTranslations } from "next-intl";
 
 type ProductCardProps = {
   image: string;
@@ -28,6 +29,7 @@ export default function ProductCard({
   inStock = true,
   discountPercent,
 }: ProductCardProps) {
+  const t = useTranslations("product");
   const [added, setAdded] = useState(false);
 
   function handleAddToCart(e: React.MouseEvent) {
@@ -85,20 +87,17 @@ export default function ProductCard({
       </div>
 
       <div className="space-y-4 p-6">
-
         <h3 className="text-2xl font-bold">{title}</h3>
 
-        <p className="text-sm text-gray-400">
-          Product Code : {code}
-        </p>
+        <p className="text-sm text-gray-400">Product Code : {code}</p>
 
         <p className="text-gray-300">
-          جنس: {translateMaterial(material)}
+          {t("material")}: {translateMaterial(material)}
         </p>
 
         {craftingDays && (
           <p className="text-sm text-gray-400">
-            زمان ساخت: {craftingDays} روز کاری
+            {t("craftingDays")}: {craftingDays} {t("days")}
           </p>
         )}
 
@@ -111,9 +110,12 @@ export default function ProductCard({
           disabled={!inStock}
           className="w-full rounded-xl border border-yellow-600 bg-black/30 px-4 py-3 text-sm text-white backdrop-blur-sm transition-all duration-300 hover:bg-yellow-700 hover:text-black disabled:opacity-40"
         >
-          {added ? "✅ اضافه شد" : inStock ? "افزودن به سبد" : "ناموجود"}
+          {added
+            ? `✅ ${t("added")}`
+            : inStock
+              ? t("addToCart")
+              : t("outOfStock")}
         </button>
-
       </div>
     </Link>
   );

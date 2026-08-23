@@ -4,6 +4,8 @@
     "shop": "فروشگاه",
     "collections": "کالکشن‌ها",
     "portfolio": "پورتفولیو",
+    "portfolioAccessory": "اکسسوری",
+    "portfolioMusic": "موسیقی",
     "blog": "وبلاگ",
     "contact": "تماس با ما",
     "about": "درباره ما",
@@ -11,5 +13,13 @@
     "login": "ثبت‌نام | ورود",
     "cart": "سبد خرید",
     "profile": "پروفایل"
+  },
+  "product": {
+    "material": "جنس",
+    "craftingDays": "زمان ساخت",
+    "days": "روز کاری",
+    "addToCart": "افزودن به سبد",
+    "outOfStock": "ناموجود",
+    "added": "اضافه شد"
   }
 }
