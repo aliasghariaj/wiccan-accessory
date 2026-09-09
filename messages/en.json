@@ -21,5 +21,25 @@
     "addToCart": "Add to cart",
     "outOfStock": "Out of stock",
     "added": "Added"
+  },
+  "home": {
+    "heroEnter": "Enter the World",
+    "storyEyebrow": "OUR WORLD",
+    "storyTitle": "The Story of Wiccan Accessory",
+    "storyText": "Wiccan Accessory is more than a shop. Every stone, every chain and every accessory here is part of a story. We draw inspiration from the gothic, medieval, folklore, nature and music worlds to create handmade pieces, each with its own character and narrative.",
+    "collectionsTitle": "Collection Worlds",
+    "collectionBone": "Bone & Legend",
+    "collectionChainmail": "Handmade Chains",
+    "collectionCrystal": "Natural Stones",
+    "collectionMoon": "Moon Magic"
+  },
+  "footer": {
+    "tagline": "Handmade Gothic, Medieval & Fantasy Accessories",
+    "instagram": "Instagram",
+    "telegram": "Telegram",
+    "rights": "All rights reserved."
+  },
+  "support": {
+    "button": "Support"
   }
 }

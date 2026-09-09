@@ -1,20 +1,26 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 export default function Collections() {
+  const t = useTranslations("home");
+
   const collections = [
     {
       title: "Bone",
-      subtitle: "استخوان و افسانه",
+      subtitle: t("collectionBone"),
     },
     {
       title: "Chainmail",
-      subtitle: "زنجیرهای دست‌ساز",
+      subtitle: t("collectionChainmail"),
     },
     {
       title: "Crystal",
-      subtitle: "سنگ‌های طبیعی",
+      subtitle: t("collectionCrystal"),
     },
     {
       title: "Moon Ritual",
-      subtitle: "جادوی ماه",
+      subtitle: t("collectionMoon"),
     },
   ];
 
@@ -23,7 +29,7 @@ export default function Collections() {
       <div className="mx-auto max-w-7xl px-8">
 
         <h2 className="mb-16 text-center text-5xl font-bold">
-          Collection Worlds
+          {t("collectionsTitle")}
         </h2>
 
         <div className="grid gap-8 md:grid-cols-2">

@@ -21,5 +21,25 @@
     "addToCart": "افزودن به سبد",
     "outOfStock": "ناموجود",
     "added": "اضافه شد"
+  },
+  "home": {
+    "heroEnter": "ورود به دنیا",
+    "storyEyebrow": "OUR WORLD",
+    "storyTitle": "داستان Wiccan Accessory",
+    "storyText": "Wiccan Accessory تنها یک فروشگاه نیست. اینجا هر سنگ، هر زنجیر و هر اکسسوری بخشی از یک داستان است. ما از دنیای گاتیک، مدیوال، فولکلور، طبیعت و موسیقی الهام می‌گیریم تا آثاری دست‌ساز خلق کنیم که هر کدام شخصیت و روایت مخصوص خودشان را دارند.",
+    "collectionsTitle": "Collection Worlds",
+    "collectionBone": "استخوان و افسانه",
+    "collectionChainmail": "زنجیرهای دست‌ساز",
+    "collectionCrystal": "سنگ‌های طبیعی",
+    "collectionMoon": "جادوی ماه"
+  },
+  "footer": {
+    "tagline": "اکسسوری دست‌ساز گاتیک، مدیوال و فانتزی",
+    "instagram": "اینستاگرام",
+    "telegram": "تلگرام",
+    "rights": "تمام حقوق محفوظ است."
+  },
+  "support": {
+    "button": "پشتیبانی"
   }
 }

@@ -1,9 +1,14 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { BRAND } from "@/lib/constants";
 import Container from "@/components/common/Container";
 import RealmButton from "@/components/ui/RealmButton";
 import Link from "next/link";
 
 export default function Hero() {
+  const t = useTranslations("home");
+
   return (
     <section
       className="relative flex min-h-screen items-center justify-center overflow-hidden"
@@ -39,7 +44,7 @@ export default function Hero() {
             href="#brand-story"
             className="mt-8 inline-block rounded-xl border border-yellow-600 bg-black/30 px-8 py-4 text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-yellow-500 hover:bg-yellow-700 hover:text-black hover:shadow-[0_0_30px_rgba(198,161,91,0.55)]"
           >
-            ورود به دنیا
+            {t("heroEnter")}
           </Link>
 
           <p className="mt-16 animate-bounce text-3xl opacity-60">↓</p>
