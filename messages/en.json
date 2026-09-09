@@ -63,5 +63,13 @@
     "noResults": "No products found for this filter.",
     "realmHeading": "All products in this realm",
     "realmEmpty": "No products have been added to this realm yet."
+  },
+  "realmDetail": {
+    "enter": "Enter {realm}",
+    "gothicText": "Shadows, dark lace and dark beauty. Every piece in this collection is inspired by gothic romanticism and endless nights.",
+    "wiccanText": "The magic of nature, sacred stones and ancient Wiccan rituals. Every piece in this collection reflects humanity's connection with the earth, the moon and the elements.",
+    "mermaidText": "Sea shells, pearls and the secrets of the ocean depths. This collection is inspired by mermaid legends and the mysterious beauty of deep waters.",
+    "grungeText": "The rebellious spirit of the 90s, torn flannel and raw guitar sound. This collection is inspired by grunge culture and the raw freedom of that era.",
+    "decorativeText": "Decorative stones, small vessels and pieces to adorn your living space. This collection is inspired by handmade art for home decor and special details."
   }
 }

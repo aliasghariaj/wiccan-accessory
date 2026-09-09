@@ -1,11 +1,15 @@
-import GrungeRealm from "@/components/realm/grunge/GrungeRealm";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import DecorativeRealm from "@/components/realm/decorative/DecorativeRealm";
 import RealmShopSection from "@/components/realm/RealmShopSection";
 
-export default function GrungeRealmPage() {
+export default function DecorativeRealmPage() {
   return (
     <>
-      <GrungeRealm />
-      <RealmShopSection realm="Grunge" />
+      <Header />
+      <DecorativeRealm />
+      <RealmShopSection realm="Decorative" />
+      <Footer />
     </>
   );
 }
