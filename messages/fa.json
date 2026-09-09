@@ -14,13 +14,22 @@
     "cart": "سبد خرید",
     "profile": "پروفایل"
   },
+  "common": {
+    "all": "همه",
+    "loading": "در حال بارگذاری..."
+  },
   "product": {
     "material": "جنس",
+    "color": "رنگ",
     "craftingDays": "زمان ساخت",
+    "deliveryDays": "زمان تحویل",
     "days": "روز کاری",
     "addToCart": "افزودن به سبد",
     "outOfStock": "ناموجود",
-    "added": "اضافه شد"
+    "added": "اضافه شد",
+    "discountBadge": "{percent}% تخفیف",
+    "codeLabel": "کد محصول",
+    "notFound": "محصول پیدا نشد."
   },
   "home": {
     "heroEnter": "ورود به دنیا",
@@ -41,5 +50,18 @@
   },
   "support": {
     "button": "پشتیبانی"
+  },
+  "shop": {
+    "searchPlaceholder": "جستجوی محصول...",
+    "filtersToggle": "فیلترها و مرتب‌سازی",
+    "categoryHeading": "دسته‌بندی",
+    "typeHeading": "نوع محصول",
+    "sortHeading": "مرتب‌سازی",
+    "sortNewest": "جدیدترین",
+    "sortCheapFirst": "ارزان به گران",
+    "sortExpensiveFirst": "گران به ارزان",
+    "noResults": "محصولی با این فیلتر پیدا نشد.",
+    "realmHeading": "همه محصولات این Realm",
+    "realmEmpty": "هنوز محصولی توی این Realm اضافه نشده."
   }
 }

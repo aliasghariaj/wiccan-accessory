@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { translateMaterial } from "@/lib/materials";
 import { formatPriceFa } from "@/lib/formatPrice";
 import { addToCart } from "@/lib/cart";
 import { useTranslations } from "next-intl";
@@ -62,12 +61,12 @@ export default function ProductCard({
       <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
         {!inStock && (
           <span className="rounded-full bg-red-900/80 px-3 py-1 text-xs text-white">
-            ناموجود
+            {t("outOfStock")}
           </span>
         )}
         {discountPercent && (
           <span className="rounded-full bg-yellow-700/90 px-3 py-1 text-xs text-black">
-            {discountPercent}% تخفیف
+            {t("discountBadge", { percent: discountPercent })}
           </span>
         )}
       </div>
@@ -89,10 +88,10 @@ export default function ProductCard({
       <div className="space-y-4 p-6">
         <h3 className="text-2xl font-bold">{title}</h3>
 
-        <p className="text-sm text-gray-400">Product Code : {code}</p>
+        <p className="text-sm text-gray-400">{t("codeLabel")} : {code}</p>
 
         <p className="text-gray-300">
-          {t("material")}: {translateMaterial(material)}
+          {t("material")}: {material}
         </p>
 
         {craftingDays && (

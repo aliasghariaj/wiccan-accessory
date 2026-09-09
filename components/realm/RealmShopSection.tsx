@@ -4,8 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import ProductCard from "@/components/product/ProductCard";
 import Container from "@/components/common/Container";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { getDisplayTitle, getDisplayMaterials } from "@/lib/productDisplay";
+import { translateTypeToEnglish } from "@/lib/typesEn";
 
 type Product = {
   id: string;
@@ -24,7 +25,7 @@ type Product = {
 };
 
 const types = [
-  "همه",
+  "all",
   "دستبند",
   "گردنبند",
   "گوشواره",
@@ -33,17 +34,19 @@ const types = [
   "استخوان",
 ];
 const sortOptions = [
-  { value: "newest", label: "جدیدترین" },
-  { value: "cheap-first", label: "ارزان به گران" },
-  { value: "expensive-first", label: "گران به ارزان" },
-];
+  { value: "newest", labelKey: "sortNewest" },
+  { value: "cheap-first", labelKey: "sortCheapFirst" },
+  { value: "expensive-first", labelKey: "sortExpensiveFirst" },
+] as const;
 
 export default function RealmShopSection({ realm }: { realm: string }) {
   const locale = useLocale();
+  const t = useTranslations("shop");
+  const tCommon = useTranslations("common");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [selectedType, setSelectedType] = useState("همه");
+  const [selectedType, setSelectedType] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
 
   useEffect(() => {
@@ -60,7 +63,7 @@ export default function RealmShopSection({ realm }: { realm: string }) {
 
   const filteredProducts = useMemo(() => {
     let result = products.filter(
-      (p) => selectedType === "همه" || p.type === selectedType,
+      (p) => selectedType === "all" || p.type === selectedType,
     );
 
     if (sortBy === "cheap-first") {
@@ -81,7 +84,7 @@ export default function RealmShopSection({ realm }: { realm: string }) {
     <section id="shop-section" className="bg-[#090909] py-24 text-white">
       <Container>
         <h2 className="mb-12 text-center text-4xl font-bold">
-          همه‌ی محصولات این Realm
+          {t("realmHeading")}
         </h2>
 
         <div className="mb-10 flex flex-wrap justify-center gap-6">
@@ -96,7 +99,11 @@ export default function RealmShopSection({ realm }: { realm: string }) {
                     : "border-white/10 text-gray-300"
                 }`}
               >
-                {type}
+                {type === "all"
+                  ? tCommon("all")
+                  : locale === "fa"
+                    ? type
+                    : translateTypeToEnglish(type)}
               </button>
             ))}
           </div>
@@ -112,16 +119,16 @@ export default function RealmShopSection({ realm }: { realm: string }) {
                     : "border-white/10 text-gray-300"
                 }`}
               >
-                {option.label}
+                {t(option.labelKey)}
               </button>
             ))}
           </div>
         </div>
 
         {loading ? (
-          <p className="text-center text-gray-400">در حال بارگذاری...</p>
+          <p className="text-center text-gray-400">{tCommon("loading")}</p>
         ) : filteredProducts.length === 0 ? (
-          <p className="text-center text-gray-400">محصولی پیدا نشد.</p>
+          <p className="text-center text-gray-400">{t("noResults")}</p>
         ) : (
           <div className="grid justify-items-center gap-10 sm:grid-cols-2 xl:grid-cols-3">
             {filteredProducts.map((product) => (

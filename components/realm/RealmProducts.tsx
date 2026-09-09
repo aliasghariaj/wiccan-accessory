@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabase";
 import ProductCard from "@/components/product/ProductCard";
-import { useLocale } from "next-intl";
 import { getDisplayTitle, getDisplayMaterials } from "@/lib/productDisplay";
 
 type Product = {
@@ -20,6 +20,7 @@ type Product = {
 
 export default function RealmProducts({ realm }: { realm: string }) {
   const locale = useLocale();
+  const t = useTranslations("shop");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -46,7 +47,7 @@ export default function RealmProducts({ realm }: { realm: string }) {
   if (products.length === 0) {
     return (
       <p className="mt-24 text-gray-500">
-        هنوز محصولی توی این Realm اضافه نشده.
+        {t("realmEmpty")}
       </p>
     );
   }

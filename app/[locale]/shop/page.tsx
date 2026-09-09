@@ -6,8 +6,9 @@ import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import ProductCard from "@/components/product/ProductCard";
 import { supabase } from "@/lib/supabase";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { getDisplayTitle, getDisplayMaterials } from "@/lib/productDisplay";
+import { translateTypeToEnglish } from "@/lib/typesEn";
 
 type Product = {
   id: string;
@@ -25,9 +26,9 @@ type Product = {
   created_at: string;
 };
 
-const realms = ["همه", "Wiccan", "Gothic", "Mermaid", "Grunge", "Decorative"];
+const realms = ["all", "Wiccan", "Gothic", "Mermaid", "Grunge", "Decorative"];
 const types = [
-  "همه",
+  "all",
   "دستبند",
   "گردنبند",
   "گوشواره",
@@ -36,18 +37,21 @@ const types = [
   "استخوان",
 ];
 const sortOptions = [
-  { value: "newest", label: "جدیدترین" },
-  { value: "cheap-first", label: "ارزان به گران" },
-  { value: "expensive-first", label: "گران به ارزان" },
-];
+  { value: "newest", labelKey: "sortNewest" },
+  { value: "cheap-first", labelKey: "sortCheapFirst" },
+  { value: "expensive-first", labelKey: "sortExpensiveFirst" },
+] as const;
 
 export default function ShopPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const locale = useLocale();
+  const t = useTranslations("shop");
+  const tCommon = useTranslations("common");
+  const tNav = useTranslations("nav");
 
-  const [selectedRealm, setSelectedRealm] = useState("همه");
-  const [selectedType, setSelectedType] = useState("همه");
+  const [selectedRealm, setSelectedRealm] = useState("all");
+  const [selectedType, setSelectedType] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
   const [searchQuery, setSearchQuery] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -65,8 +69,8 @@ export default function ShopPage() {
 
   const filteredProducts = useMemo(() => {
     let result = products.filter((p) => {
-      const realmMatch = selectedRealm === "همه" || p.realm === selectedRealm;
-      const typeMatch = selectedType === "همه" || p.type === selectedType;
+      const realmMatch = selectedRealm === "all" || p.realm === selectedRealm;
+      const typeMatch = selectedType === "all" || p.type === selectedType;
       const searchMatch = p.title
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
@@ -93,14 +97,14 @@ export default function ShopPage() {
 
       <main className="min-h-screen bg-[#090909] pt-32 pb-24 text-white">
         <Container>
-          <h1 className="mb-8 text-center text-5xl font-bold">فروشگاه</h1>
+          <h1 className="mb-8 text-center text-5xl font-bold">{tNav("shop")}</h1>
 
           <div className="mb-12 flex justify-center">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="جستجوی محصول..."
+              placeholder={t("searchPlaceholder")}
               className="w-full max-w-md rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-white placeholder:text-gray-500 focus:border-yellow-600 focus:outline-none"
             />
           </div>
@@ -110,7 +114,7 @@ export default function ShopPage() {
               onClick={() => setFiltersOpen(!filtersOpen)}
               className="mb-4 flex w-full items-center justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm md:hidden"
             >
-              <span>فیلترها و مرتب‌سازی</span>
+              <span>{t("filtersToggle")}</span>
               <span>{filtersOpen ? "▲" : "▼"}</span>
             </button>
 
@@ -119,7 +123,7 @@ export default function ShopPage() {
             >
               <div>
                 <h2 className="mb-4 text-lg font-bold text-yellow-600">
-                  دسته‌بندی
+                  {t("categoryHeading")}
                 </h2>
                 <div className="flex flex-row flex-wrap gap-2 md:flex-col">
                   {realms.map((realm) => (
@@ -132,7 +136,7 @@ export default function ShopPage() {
                           : "border-white/10 text-gray-300 hover:border-white/30"
                       }`}
                     >
-                      {realm}
+                      {realm === "all" ? tCommon("all") : realm}
                     </button>
                   ))}
                 </div>
@@ -140,7 +144,7 @@ export default function ShopPage() {
 
               <div>
                 <h2 className="mb-4 text-lg font-bold text-yellow-600">
-                  نوع محصول
+                  {t("typeHeading")}
                 </h2>
                 <div className="flex flex-row flex-wrap gap-2 md:flex-col">
                   {types.map((type) => (
@@ -153,7 +157,11 @@ export default function ShopPage() {
                           : "border-white/10 text-gray-300 hover:border-white/30"
                       }`}
                     >
-                      {type}
+                      {type === "all"
+                        ? tCommon("all")
+                        : locale === "fa"
+                          ? type
+                          : translateTypeToEnglish(type)}
                     </button>
                   ))}
                 </div>
@@ -161,7 +169,7 @@ export default function ShopPage() {
 
               <div>
                 <h2 className="mb-4 text-lg font-bold text-yellow-600">
-                  مرتب‌سازی
+                  {t("sortHeading")}
                 </h2>
                 <div className="flex flex-row flex-wrap gap-2 md:flex-col">
                   {sortOptions.map((option) => (
@@ -174,7 +182,7 @@ export default function ShopPage() {
                           : "border-white/10 text-gray-300 hover:border-white/30"
                       }`}
                     >
-                      {option.label}
+                      {t(option.labelKey)}
                     </button>
                   ))}
                 </div>
@@ -183,7 +191,7 @@ export default function ShopPage() {
 
             {loading ? (
               <p className="w-full py-20 text-center text-gray-400">
-                در حال بارگذاری...
+                {tCommon("loading")}
               </p>
             ) : filteredProducts.length > 0 ? (
               <div className="grid w-full justify-items-center gap-10 sm:grid-cols-2 xl:grid-cols-3">
@@ -205,7 +213,7 @@ export default function ShopPage() {
               </div>
             ) : (
               <p className="w-full py-20 text-center text-gray-400">
-                محصولی با این فیلتر پیدا نشد.
+                {t("noResults")}
               </p>
             )}
           </div>

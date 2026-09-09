@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { addToCart } from "@/lib/cart";
 import RealmButton from "@/components/ui/RealmButton";
 
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export default function AddToCartButton({ code, title, image, priceValue }: Props) {
+  const t = useTranslations("product");
   const [added, setAdded] = useState(false);
 
   function handleClick() {
@@ -22,7 +24,7 @@ export default function AddToCartButton({ code, title, image, priceValue }: Prop
 
   return (
     <RealmButton onClick={handleClick}>
-      {added ? "✅ اضافه شد" : "افزودن به سبد خرید"}
+      {added ? `✅ ${t("added")}` : t("addToCart")}
     </RealmButton>
   );
 }

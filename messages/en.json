@@ -14,13 +14,22 @@
     "cart": "Cart",
     "profile": "Profile"
   },
+  "common": {
+    "all": "All",
+    "loading": "Loading..."
+  },
   "product": {
     "material": "Material",
+    "color": "Color",
     "craftingDays": "Crafting time",
+    "deliveryDays": "Delivery time",
     "days": "business days",
     "addToCart": "Add to cart",
     "outOfStock": "Out of stock",
-    "added": "Added"
+    "added": "Added",
+    "discountBadge": "{percent}% off",
+    "codeLabel": "Product Code",
+    "notFound": "Product not found."
   },
   "home": {
     "heroEnter": "Enter the World",
@@ -41,5 +50,18 @@
   },
   "support": {
     "button": "Support"
+  },
+  "shop": {
+    "searchPlaceholder": "Search products...",
+    "filtersToggle": "Filters & sorting",
+    "categoryHeading": "Category",
+    "typeHeading": "Product type",
+    "sortHeading": "Sort by",
+    "sortNewest": "Newest",
+    "sortCheapFirst": "Price: low to high",
+    "sortExpensiveFirst": "Price: high to low",
+    "noResults": "No products found for this filter.",
+    "realmHeading": "All products in this realm",
+    "realmEmpty": "No products have been added to this realm yet."
   }
 }
