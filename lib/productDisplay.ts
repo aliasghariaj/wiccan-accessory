@@ -7,6 +7,8 @@ type ProductLike = {
   description_en?: string | null;
   materials?: string[] | null;
   materials_en?: string[] | null;
+  color?: string | null;
+  color_en?: string | null;
 };
 
 export function getDisplayTitle(product: ProductLike, locale: string): string {
@@ -23,4 +25,9 @@ export function getDisplayMaterials(product: ProductLike, locale: string): strin
   if (locale === "fa") return product.materials || [];
   if (product.materials_en && product.materials_en.length > 0) return product.materials_en;
   return translateMaterialsToEnglish(product.materials || []);
+}
+
+export function getDisplayColor(product: ProductLike, locale: string): string {
+  if (locale === "fa") return product.color || "";
+  return product.color_en || product.color || "";
 }
