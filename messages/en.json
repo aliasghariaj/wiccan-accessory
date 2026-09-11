@@ -103,6 +103,19 @@
     "addressRequired": "Full address is required",
     "useProfileButton": "Use my saved profile info"
   },
+  "orders": {
+    "title": "My Orders",
+    "empty": "You haven't placed any orders yet.",
+    "loginRequired": "You need to log in to see your orders.",
+    "goToLogin": "Log in",
+    "statusPending": "Pending review",
+    "statusConfirmed": "Confirmed",
+    "statusShipped": "Shipped",
+    "statusCancelled": "Cancelled",
+    "itemsLabel": "Order items",
+    "viewReceipt": "View payment receipt",
+    "orderDate": "Order date"
+  },
   "payment": {
     "title": "Payment",
     "amountLabel": "Amount to pay",
@@ -145,13 +158,13 @@
   "profile": {
     "title": "My Profile",
     "usernameLabel": "Username",
-    "locationAddressLabel": "Location address",
     "postalAddressLabel": "Postal address",
     "instagramLabel": "Instagram ID",
     "saveError": "Error saving",
     "saveSuccess": "Information saved ✅",
     "saving": "Saving...",
     "saveChanges": "Save changes",
+    "myOrders": "My orders",
     "logout": "Log out"
   },
   "about": {

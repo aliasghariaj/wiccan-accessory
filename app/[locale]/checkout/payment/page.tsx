@@ -85,7 +85,7 @@ export default function PaymentPage() {
     const userId = sessionData.session?.user.id ?? null;
 
     const fileExt = receiptFile.name.split(".").pop();
-    const fileName = `${Date.now()}.${fileExt}`;
+    const fileName = `${userId ?? "guest"}/${Date.now()}.${fileExt}`;
 
     const { error: uploadError } = await supabase.storage
       .from("receipts")

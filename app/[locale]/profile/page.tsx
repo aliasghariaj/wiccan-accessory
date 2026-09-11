@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabase";
+import { iranCities } from "@/lib/iranCities";
+import { translateCityToEnglish } from "@/lib/citiesEn";
+import { Link } from "@/i18n/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 
 export default function ProfilePage() {
   const router = useRouter();
+  const locale = useLocale();
   const t = useTranslations("profile");
   const tCheckout = useTranslations("checkout");
   const tCommon = useTranslations("common");
@@ -20,7 +24,8 @@ export default function ProfilePage() {
 
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
-  const [locationAddress, setLocationAddress] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [city, setCity] = useState("");
   const [postalAddress, setPostalAddress] = useState("");
   const [instagramId, setInstagramId] = useState("");
 
@@ -44,7 +49,8 @@ export default function ProfilePage() {
       if (profile) {
         setUsername(profile.username ?? "");
         setPhone(profile.phone ?? "");
-        setLocationAddress(profile.location_address ?? "");
+        setPostalCode(profile.postal_code ?? "");
+        setCity(profile.city ?? "");
         setPostalAddress(profile.postal_address ?? "");
         setInstagramId(profile.instagram_id ?? "");
       }
@@ -67,13 +73,14 @@ export default function ProfilePage() {
       .update({
         username,
         phone,
-        location_address: locationAddress,
+        postal_code: postalCode,
+        city,
         postal_address: postalAddress,
         instagram_id: instagramId,
       })
       .eq("id", userId);
 
-    setMessage(error ? t("saveError") : t("saveSuccess"));
+    setMessage(error ? `${t("saveError")}: ${error.message}` : t("saveSuccess"));
     setSaving(false);
   }
 
@@ -125,11 +132,27 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-gray-400">{t("locationAddressLabel")}</label>
+                <label className="mb-2 block text-sm text-gray-400">{tCheckout("cityLabel")}</label>
+                <select
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+                >
+                  <option value="">{tCheckout("cityPlaceholder")}</option>
+                  {iranCities.map((c) => (
+                    <option key={c} value={c}>
+                      {locale === "fa" ? c : translateCityToEnglish(c)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm text-gray-400">{tCheckout("postalCodeLabel")}</label>
                 <input
                   type="text"
-                  value={locationAddress}
-                  onChange={(e) => setLocationAddress(e.target.value)}
+                  value={postalCode}
+                  onChange={(e) => setPostalCode(e.target.value)}
                   className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
                 />
               </div>
@@ -165,6 +188,13 @@ export default function ProfilePage() {
               >
                 {saving ? t("saving") : t("saveChanges")}
               </button>
+
+              <Link
+                href="/orders"
+                className="block w-full rounded-xl border border-white/10 px-8 py-4 text-center text-gray-300 transition-all duration-300 hover:border-yellow-600 hover:text-yellow-500"
+              >
+                {t("myOrders")}
+              </Link>
 
               <button
                 onClick={handleLogout}

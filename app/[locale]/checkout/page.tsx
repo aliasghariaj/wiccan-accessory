@@ -2,21 +2,23 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import { getCart, CartItem } from "@/lib/cart";
 import { supabase } from "@/lib/supabase";
 import { iranCities } from "@/lib/iranCities";
+import { translateCityToEnglish } from "@/lib/citiesEn";
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const locale = useLocale();
   const t = useTranslations("checkout");
   const tCart = useTranslations("cart");
   const tCommon = useTranslations("common");
   const [cart] = useState<CartItem[]>(() => getCart());
-  const [savedProfile, setSavedProfile] = useState<{ username: string | null; phone: string | null; postal_address: string | null } | null>(null);
+  const [savedProfile, setSavedProfile] = useState<{ username: string | null; phone: string | null; postal_address: string | null; postal_code: string | null; city: string | null } | null>(null);
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -42,7 +44,7 @@ export default function CheckoutPage() {
           .eq("id", data.session.user.id)
           .single();
 
-        if (profile && (profile.phone || profile.postal_address)) {
+        if (profile && (profile.phone || profile.postal_address || profile.city || profile.postal_code)) {
           setSavedProfile(profile);
         }
       }
@@ -54,6 +56,8 @@ export default function CheckoutPage() {
     if (savedProfile.username) setFullName(savedProfile.username);
     if (savedProfile.phone) setPhone(savedProfile.phone);
     if (savedProfile.postal_address) setAddress(savedProfile.postal_address);
+    if (savedProfile.postal_code) setPostalCode(savedProfile.postal_code);
+    if (savedProfile.city) setCity(savedProfile.city);
   }
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -175,7 +179,9 @@ export default function CheckoutPage() {
               >
                 <option value="">{t("cityPlaceholder")}</option>
                 {iranCities.map((c) => (
-                  <option key={c} value={c}>{c}</option>
+                  <option key={c} value={c}>
+                    {locale === "fa" ? c : translateCityToEnglish(c)}
+                  </option>
                 ))}
               </select>
               {errors.city && (
