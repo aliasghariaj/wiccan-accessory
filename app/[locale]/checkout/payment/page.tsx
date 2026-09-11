@@ -7,7 +7,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import { supabase } from "@/lib/supabase";
-import { formatPriceFa } from "@/lib/formatPrice";
+import { formatPrice } from "@/lib/formatPrice";
 
 type OrderItem = {
   code: string;
@@ -182,7 +182,7 @@ export default function PaymentPage() {
             <div className="rounded-xl border border-yellow-700 bg-yellow-900/10 p-6 text-center">
               <p className="mb-2 text-sm text-gray-400">{t("amountLabel")}</p>
               <p className="mb-4 text-3xl font-bold text-yellow-500">
-                {formatPriceFa(orderInfo.grandTotal)}
+                {formatPrice(orderInfo.grandTotal, locale)}
               </p>
               {paymentMethod === "card-to-card" && (
                 <>

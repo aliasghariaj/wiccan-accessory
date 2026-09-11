@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { formatPriceFa } from "@/lib/formatPrice";
+import { formatPrice } from "@/lib/formatPrice";
 import { addToCart } from "@/lib/cart";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 type ProductCardProps = {
   image: string;
@@ -29,6 +29,7 @@ export default function ProductCard({
   discountPercent,
 }: ProductCardProps) {
   const t = useTranslations("product");
+  const locale = useLocale();
   const [added, setAdded] = useState(false);
 
   function handleAddToCart(e: React.MouseEvent) {
@@ -101,7 +102,7 @@ export default function ProductCard({
         )}
 
         <p className="text-2xl font-bold text-yellow-600">
-          {formatPriceFa(priceValue)}
+          {formatPrice(priceValue, locale)}
         </p>
 
         <button
