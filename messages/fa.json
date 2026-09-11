@@ -100,7 +100,8 @@
     "phoneRequired": "شماره تماس الزامیه",
     "postalCodeRequired": "کد پستی الزامیه",
     "cityRequired": "انتخاب شهر الزامیه",
-    "addressRequired": "آدرس کامل الزامیه"
+    "addressRequired": "آدرس کامل الزامیه",
+    "useProfileButton": "استفاده از اطلاعات پروفایل من"
   },
   "payment": {
     "title": "پرداخت",

@@ -100,7 +100,8 @@
     "phoneRequired": "Phone number is required",
     "postalCodeRequired": "Postal code is required",
     "cityRequired": "Please select a city",
-    "addressRequired": "Full address is required"
+    "addressRequired": "Full address is required",
+    "useProfileButton": "Use my saved profile info"
   },
   "payment": {
     "title": "Payment",

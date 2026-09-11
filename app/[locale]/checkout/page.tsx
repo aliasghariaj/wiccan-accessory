@@ -16,6 +16,7 @@ export default function CheckoutPage() {
   const tCart = useTranslations("cart");
   const tCommon = useTranslations("common");
   const [cart] = useState<CartItem[]>(() => getCart());
+  const [savedProfile, setSavedProfile] = useState<{ username: string | null; phone: string | null; postal_address: string | null } | null>(null);
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -32,7 +33,7 @@ export default function CheckoutPage() {
       return;
     }
 
-    // اگه کاربر پروفایل داشته باشه، فیلدها رو از قبل پر می‌کنیم
+    // اگه کاربر پروفایل داشته باشه، نگهش می‌داریم تا خودش بخواد پر کنه
     supabase.auth.getSession().then(async ({ data }) => {
       if (data.session) {
         const { data: profile } = await supabase
@@ -41,13 +42,19 @@ export default function CheckoutPage() {
           .eq("id", data.session.user.id)
           .single();
 
-        if (profile) {
-          setPhone(profile.phone ?? "");
-          setAddress(profile.postal_address ?? "");
+        if (profile && (profile.phone || profile.postal_address)) {
+          setSavedProfile(profile);
         }
       }
     });
   }, [router]);
+
+  function useProfileInfo() {
+    if (!savedProfile) return;
+    if (savedProfile.username) setFullName(savedProfile.username);
+    if (savedProfile.phone) setPhone(savedProfile.phone);
+    if (savedProfile.postal_address) setAddress(savedProfile.postal_address);
+  }
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -101,6 +108,16 @@ export default function CheckoutPage() {
           </h1>
 
           <div className="mx-auto max-w-xl space-y-6 rounded-2xl border border-white/10 bg-white/5 p-8">
+
+            {savedProfile && (
+              <button
+                type="button"
+                onClick={useProfileInfo}
+                className="w-full rounded-lg border border-yellow-700/60 bg-yellow-900/10 px-4 py-3 text-sm text-yellow-500 transition hover:bg-yellow-900/20"
+              >
+                {t("useProfileButton")}
+              </button>
+            )}
 
             <div>
               <label className="mb-2 block text-sm text-gray-400">
