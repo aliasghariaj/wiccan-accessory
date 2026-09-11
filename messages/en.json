@@ -16,7 +16,8 @@
   },
   "common": {
     "all": "All",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "total": "Total"
   },
   "product": {
     "material": "Material",
@@ -71,5 +72,63 @@
     "mermaidText": "Sea shells, pearls and the secrets of the ocean depths. This collection is inspired by mermaid legends and the mysterious beauty of deep waters.",
     "grungeText": "The rebellious spirit of the 90s, torn flannel and raw guitar sound. This collection is inspired by grunge culture and the raw freedom of that era.",
     "decorativeText": "Decorative stones, small vessels and pieces to adorn your living space. This collection is inspired by handmade art for home decor and special details."
+  },
+  "cart": {
+    "empty": "Your cart is empty.",
+    "goToShop": "Go to shop",
+    "currency": "Toman",
+    "remove": "Remove",
+    "continueButton": "Continue"
+  },
+  "checkout": {
+    "title": "Complete order",
+    "fullNameLabel": "Full name",
+    "phoneLabel": "Phone number",
+    "postalCodeLabel": "Postal code",
+    "cityLabel": "City",
+    "cityPlaceholder": "Select...",
+    "addressLabel": "Full address",
+    "shippingMethodLabel": "Shipping method",
+    "tipax": "Tipax",
+    "post": "Post office",
+    "productsTotal": "Products total",
+    "shippingCost": "Shipping cost",
+    "inCity": "In-city",
+    "betweenCity": "Inter-city",
+    "continueToPayment": "Continue to payment",
+    "fullNameRequired": "Full name is required",
+    "phoneRequired": "Phone number is required",
+    "postalCodeRequired": "Postal code is required",
+    "cityRequired": "Please select a city",
+    "addressRequired": "Full address is required"
+  },
+  "payment": {
+    "title": "Payment",
+    "amountLabel": "Amount to pay",
+    "cardNumberLabel": "Card number",
+    "notSetYet": "Not set yet",
+    "cardOwnerPrefix": "In the name of",
+    "cardToCard": "Card to card",
+    "onlinePayment": "Online payment (Zarinpal)",
+    "uploadReceiptLabel": "Upload payment receipt photo",
+    "uploadReceiptError": "Please upload the payment receipt photo.",
+    "uploadError": "Error uploading receipt",
+    "orderError": "Error submitting order",
+    "submitting": "Submitting order...",
+    "submitOrder": "Submit order",
+    "redirecting": "Redirecting to payment gateway...",
+    "payAndContinue": "Pay and continue",
+    "gatewayError": "Error connecting to the payment gateway."
+  },
+  "verify": {
+    "checking": "Checking payment...",
+    "success": "Payment successful ✅ Redirecting...",
+    "failed": "Payment failed or was cancelled.",
+    "backToCart": "Back to cart"
+  },
+  "checkoutSuccess": {
+    "title": "Order placed successfully ✅",
+    "message": "We'll review your receipt and confirm your order soon.",
+    "backToShop": "Back to shop"
   }
 }

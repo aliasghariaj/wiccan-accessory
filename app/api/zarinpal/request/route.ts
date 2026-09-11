@@ -7,7 +7,8 @@ const supabase = createClient(
 );
 
 export async function POST(req: NextRequest) {
-  const { amount, description } = await req.json();
+  const { amount, description, locale } = await req.json();
+  const safeLocale = locale === "en" ? "en" : "fa";
 
   const { data: settings } = await supabase
     .from("site_settings")
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const callbackUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/checkout/verify`;
+  const callbackUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/${safeLocale}/checkout/verify`;
 
   const response = await fetch(
     "https://sandbox.zarinpal.com/pg/rest/WebGate/PaymentRequest.json",

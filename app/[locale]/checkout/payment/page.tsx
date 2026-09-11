@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
@@ -32,6 +33,8 @@ type OrderInfo = {
 
 export default function PaymentPage() {
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("payment");
   const [orderInfo, setOrderInfo] = useState<OrderInfo | null>(() => {
     if (typeof window === "undefined") return null;
     const stored = sessionStorage.getItem("pendingOrder");
@@ -71,7 +74,7 @@ export default function PaymentPage() {
     if (!orderInfo) return;
 
     if (!receiptFile) {
-      setMessage("لطفاً عکس رسید پرداخت رو آپلود کن.");
+      setMessage(t("uploadReceiptError"));
       return;
     }
 
@@ -89,7 +92,7 @@ export default function PaymentPage() {
       .upload(fileName, receiptFile);
 
     if (uploadError) {
-      setMessage("خطا در آپلود رسید: " + uploadError.message);
+      setMessage(`${t("uploadError")}: ${uploadError.message}`);
       setSubmitting(false);
       return;
     }
@@ -116,7 +119,7 @@ export default function PaymentPage() {
     });
 
     if (insertError) {
-      setMessage("خطا در ثبت سفارش: " + insertError.message);
+      setMessage(`${t("orderError")}: ${insertError.message}`);
       setSubmitting(false);
       return;
     }
@@ -150,6 +153,7 @@ export default function PaymentPage() {
       body: JSON.stringify({
         amount: orderInfo.grandTotal,
         description: `سفارش از Wiccan Accessory`,
+        locale,
       }),
     });
 
@@ -159,7 +163,7 @@ export default function PaymentPage() {
       sessionStorage.setItem("pendingOrder", JSON.stringify(orderInfo));
       window.location.href = data.gatewayUrl;
     } else {
-      setMessage(data.error || "خطا در اتصال به درگاه پرداخت.");
+      setMessage(data.error || t("gatewayError"));
       setRedirecting(false);
     }
   }
@@ -170,27 +174,24 @@ export default function PaymentPage() {
     <>
       <Header />
 
-      <main
-        className="min-h-screen bg-[#090909] pt-40 pb-24 text-white"
-        dir="rtl"
-      >
+      <main className="min-h-screen bg-[#090909] pt-40 pb-24 text-white">
         <Container>
-          <h1 className="mb-12 text-center text-4xl font-bold">پرداخت</h1>
+          <h1 className="mb-12 text-center text-4xl font-bold">{t("title")}</h1>
 
           <div className="mx-auto max-w-xl space-y-8 rounded-2xl border border-white/10 bg-white/5 p-8">
             <div className="rounded-xl border border-yellow-700 bg-yellow-900/10 p-6 text-center">
-              <p className="mb-2 text-sm text-gray-400">مبلغ قابل پرداخت</p>
+              <p className="mb-2 text-sm text-gray-400">{t("amountLabel")}</p>
               <p className="mb-4 text-3xl font-bold text-yellow-500">
                 {formatPriceFa(orderInfo.grandTotal)}
               </p>
               {paymentMethod === "card-to-card" && (
                 <>
-                  <p className="mb-1 text-sm text-gray-400">شماره کارت</p>
+                  <p className="mb-1 text-sm text-gray-400">{t("cardNumberLabel")}</p>
                   <p className="mb-2 text-xl font-mono tracking-wider">
-                    {cardNumber || "هنوز تنظیم نشده"}
+                    {cardNumber || t("notSetYet")}
                   </p>
                   <p className="text-sm text-gray-400">
-                    به نام {cardOwner || "—"}
+                    {t("cardOwnerPrefix")} {cardOwner || "—"}
                   </p>
                 </>
               )}
@@ -206,7 +207,7 @@ export default function PaymentPage() {
                       : "border-white/10 text-gray-300"
                   }`}
                 >
-                  کارت‌به‌کارت
+                  {t("cardToCard")}
                 </button>
                 <button
                   onClick={() => setPaymentMethod("zarinpal")}
@@ -216,7 +217,7 @@ export default function PaymentPage() {
                       : "border-white/10 text-gray-300"
                   }`}
                 >
-                  پرداخت آنلاین (زرین‌پال)
+                  {t("onlinePayment")}
                 </button>
               </div>
             )}
@@ -225,7 +226,7 @@ export default function PaymentPage() {
               <>
                 <div>
                   <label className="mb-2 block text-sm text-gray-400">
-                    آپلود عکس رسید پرداخت *
+                    {t("uploadReceiptLabel")} *
                   </label>
                   <input
                     type="file"
@@ -244,7 +245,7 @@ export default function PaymentPage() {
                   disabled={submitting}
                   className="w-full rounded-xl border border-yellow-600 bg-black/30 px-8 py-4 text-white transition-all duration-300 hover:bg-yellow-700 hover:text-black disabled:opacity-50"
                 >
-                  {submitting ? "در حال ثبت سفارش..." : "ثبت سفارش"}
+                  {submitting ? t("submitting") : t("submitOrder")}
                 </button>
               </>
             ) : (
@@ -256,7 +257,7 @@ export default function PaymentPage() {
                   disabled={redirecting}
                   className="w-full rounded-xl border border-yellow-600 bg-black/30 px-8 py-4 text-white transition-all duration-300 hover:bg-yellow-700 hover:text-black disabled:opacity-50"
                 >
-                  {redirecting ? "در حال انتقال به درگاه..." : "پرداخت و ادامه"}
+                  {redirecting ? t("redirecting") : t("payAndContinue")}
                 </button>
               </>
             )}

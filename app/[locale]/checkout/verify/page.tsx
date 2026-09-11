@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
@@ -32,6 +34,7 @@ type OrderInfo = {
 export default function VerifyPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const t = useTranslations("verify");
   const [status, setStatus] = useState<"checking" | "success" | "failed">("checking");
 
   useEffect(() => {
@@ -107,15 +110,15 @@ export default function VerifyPage() {
   return (
     <>
       <Header />
-      <main className="flex min-h-screen items-center justify-center bg-[#090909] text-white" dir="rtl">
+      <main className="flex min-h-screen items-center justify-center bg-[#090909] text-white">
         <Container>
           <div className="text-center">
-            {status === "checking" && <p>در حال بررسی پرداخت...</p>}
-            {status === "success" && <p className="text-green-500">پرداخت موفق بود ✅ در حال انتقال...</p>}
+            {status === "checking" && <p>{t("checking")}</p>}
+            {status === "success" && <p className="text-green-500">{t("success")}</p>}
             {status === "failed" && (
               <div>
-                <p className="mb-4 text-red-400">پرداخت ناموفق بود یا لغو شد.</p>
-                <a href="/cart" className="text-yellow-600 hover:underline">بازگشت به سبد خرید</a>
+                <p className="mb-4 text-red-400">{t("failed")}</p>
+                <Link href="/cart" className="text-yellow-600 hover:underline">{t("backToCart")}</Link>
               </div>
             )}
           </div>

@@ -1,24 +1,29 @@
-import Link from "next/link";
+"use client";
+
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 
 export default function SuccessPage() {
+  const t = useTranslations("checkoutSuccess");
+
   return (
     <>
       <Header />
 
-      <main className="flex min-h-screen items-center justify-center bg-[#090909] text-white" dir="rtl">
+      <main className="flex min-h-screen items-center justify-center bg-[#090909] text-white">
         <Container>
           <div className="text-center">
             <h1 className="mb-6 text-4xl font-bold text-yellow-600">
-              سفارش با موفقیت ثبت شد ✅
+              {t("title")}
             </h1>
             <p className="mb-8 text-gray-400">
-              رسیدت رو بررسی می‌کنیم و به‌زودی سفارشت رو تایید می‌کنیم.
+              {t("message")}
             </p>
             <Link href="/shop" className="text-yellow-600 hover:underline">
-              بازگشت به فروشگاه
+              {t("backToShop")}
             </Link>
           </div>
         </Container>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
@@ -11,7 +12,10 @@ import { iranCities } from "@/lib/iranCities";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const t = useTranslations("checkout");
+  const tCart = useTranslations("cart");
+  const tCommon = useTranslations("common");
+  const [cart] = useState<CartItem[]>(() => getCart());
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -23,12 +27,10 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    const items = getCart();
-    if (items.length === 0) {
+    if (getCart().length === 0) {
       router.push("/cart");
       return;
     }
-    setCart(items);
 
     // اگه کاربر پروفایل داشته باشه، فیلدها رو از قبل پر می‌کنیم
     supabase.auth.getSession().then(async ({ data }) => {
@@ -56,11 +58,11 @@ export default function CheckoutPage() {
   function validate() {
     const newErrors: Record<string, string> = {};
 
-    if (!fullName.trim()) newErrors.fullName = "نام و نام خانوادگی الزامیه";
-    if (!phone.trim()) newErrors.phone = "شماره تماس الزامیه";
-    if (!postalCode.trim()) newErrors.postalCode = "کد پستی الزامیه";
-    if (!city) newErrors.city = "انتخاب شهر الزامیه";
-    if (!address.trim()) newErrors.address = "آدرس کامل الزامیه";
+    if (!fullName.trim()) newErrors.fullName = t("fullNameRequired");
+    if (!phone.trim()) newErrors.phone = t("phoneRequired");
+    if (!postalCode.trim()) newErrors.postalCode = t("postalCodeRequired");
+    if (!city) newErrors.city = t("cityRequired");
+    if (!address.trim()) newErrors.address = t("addressRequired");
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -91,18 +93,18 @@ export default function CheckoutPage() {
     <>
       <Header />
 
-      <main className="min-h-screen bg-[#090909] pt-40 pb-24 text-white" dir="rtl">
+      <main className="min-h-screen bg-[#090909] pt-40 pb-24 text-white">
         <Container>
 
           <h1 className="mb-12 text-center text-4xl font-bold">
-            تکمیل سفارش
+            {t("title")}
           </h1>
 
           <div className="mx-auto max-w-xl space-y-6 rounded-2xl border border-white/10 bg-white/5 p-8">
 
             <div>
               <label className="mb-2 block text-sm text-gray-400">
-                نام و نام خانوادگی *
+                {t("fullNameLabel")} *
               </label>
               <input
                 type="text"
@@ -117,7 +119,7 @@ export default function CheckoutPage() {
 
             <div>
               <label className="mb-2 block text-sm text-gray-400">
-                شماره تماس *
+                {t("phoneLabel")} *
               </label>
               <input
                 type="tel"
@@ -132,7 +134,7 @@ export default function CheckoutPage() {
 
             <div>
               <label className="mb-2 block text-sm text-gray-400">
-                کد پستی *
+                {t("postalCodeLabel")} *
               </label>
               <input
                 type="text"
@@ -147,14 +149,14 @@ export default function CheckoutPage() {
 
             <div>
               <label className="mb-2 block text-sm text-gray-400">
-                شهر *
+                {t("cityLabel")} *
               </label>
               <select
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
               >
-                <option value="">انتخاب کن...</option>
+                <option value="">{t("cityPlaceholder")}</option>
                 {iranCities.map((c) => (
                   <option key={c} value={c}>{c}</option>
                 ))}
@@ -166,7 +168,7 @@ export default function CheckoutPage() {
 
             <div>
               <label className="mb-2 block text-sm text-gray-400">
-                آدرس کامل *
+                {t("addressLabel")} *
               </label>
               <textarea
                 value={address}
@@ -181,7 +183,7 @@ export default function CheckoutPage() {
 
             <div>
               <label className="mb-2 block text-sm text-gray-400">
-                روش ارسال
+                {t("shippingMethodLabel")}
               </label>
               <div className="flex gap-4">
                 <button
@@ -192,7 +194,7 @@ export default function CheckoutPage() {
                       : "border-white/10 text-gray-300"
                   }`}
                 >
-                  تیپاکس
+                  {t("tipax")}
                 </button>
                 <button
                   onClick={() => setShippingMethod("post")}
@@ -202,26 +204,26 @@ export default function CheckoutPage() {
                       : "border-white/10 text-gray-300"
                   }`}
                 >
-                  اداره پست
+                  {t("post")}
                 </button>
               </div>
             </div>
 
             <div className="space-y-2 border-t border-white/10 pt-6">
               <div className="flex items-center justify-between text-gray-400">
-                <span>جمع محصولات</span>
-                <span>{total.toLocaleString()} تومان</span>
+                <span>{t("productsTotal")}</span>
+                <span>{total.toLocaleString()} {tCart("currency")}</span>
               </div>
               {city && (
                 <div className="flex items-center justify-between text-gray-400">
-                  <span>هزینه ارسال ({isInCity ? "داخل‌شهری" : "بین‌شهری"})</span>
-                  <span>{shippingCost.toLocaleString()} تومان</span>
+                  <span>{t("shippingCost")} ({isInCity ? t("inCity") : t("betweenCity")})</span>
+                  <span>{shippingCost.toLocaleString()} {tCart("currency")}</span>
                 </div>
               )}
               <div className="flex items-center justify-between text-xl font-bold">
-                <span>جمع کل</span>
+                <span>{tCommon("total")}</span>
                 <span className="text-yellow-600">
-                  {grandTotal.toLocaleString()} تومان
+                  {grandTotal.toLocaleString()} {tCart("currency")}
                 </span>
               </div>
             </div>
@@ -230,7 +232,7 @@ export default function CheckoutPage() {
               onClick={handleContinue}
               className="w-full rounded-xl border border-yellow-600 bg-black/30 px-8 py-4 text-white transition-all duration-300 hover:bg-yellow-700 hover:text-black"
             >
-              ادامه به پرداخت
+              {t("continueToPayment")}
             </button>
 
           </div>

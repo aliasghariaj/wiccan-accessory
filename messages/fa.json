@@ -16,7 +16,8 @@
   },
   "common": {
     "all": "همه",
-    "loading": "در حال بارگذاری..."
+    "loading": "در حال بارگذاری...",
+    "total": "جمع کل"
   },
   "product": {
     "material": "جنس",
@@ -71,5 +72,63 @@
     "mermaidText": "صدف‌های دریایی، مروارید و رازهای اعماق اقیانوس. این مجموعه از افسانه‌های پری‌دریایی و زیبایی رمزآلود آب‌های ژرف الهام گرفته شده است.",
     "grungeText": "روح سرکش دهه‌ی نود، فلانل‌های پاره و صدای گیتارهای خشن. این مجموعه از فرهنگ گرانج و آزادی خام آن دوران الهام گرفته شده است.",
     "decorativeText": "سنگ‌های تزیینی، ظروف کوچک و آثاری برای آراستن فضای زندگی. این مجموعه از هنر دست‌ساز برای دکوراسیون و جزئیات خاص خانه الهام گرفته شده است."
+  },
+  "cart": {
+    "empty": "سبد خریدت خالیه.",
+    "goToShop": "برو به فروشگاه",
+    "currency": "تومان",
+    "remove": "حذف",
+    "continueButton": "ادامه‌ی خرید"
+  },
+  "checkout": {
+    "title": "تکمیل سفارش",
+    "fullNameLabel": "نام و نام خانوادگی",
+    "phoneLabel": "شماره تماس",
+    "postalCodeLabel": "کد پستی",
+    "cityLabel": "شهر",
+    "cityPlaceholder": "انتخاب کن...",
+    "addressLabel": "آدرس کامل",
+    "shippingMethodLabel": "روش ارسال",
+    "tipax": "تیپاکس",
+    "post": "اداره پست",
+    "productsTotal": "جمع محصولات",
+    "shippingCost": "هزینه ارسال",
+    "inCity": "داخل‌شهری",
+    "betweenCity": "بین‌شهری",
+    "continueToPayment": "ادامه به پرداخت",
+    "fullNameRequired": "نام و نام خانوادگی الزامیه",
+    "phoneRequired": "شماره تماس الزامیه",
+    "postalCodeRequired": "کد پستی الزامیه",
+    "cityRequired": "انتخاب شهر الزامیه",
+    "addressRequired": "آدرس کامل الزامیه"
+  },
+  "payment": {
+    "title": "پرداخت",
+    "amountLabel": "مبلغ قابل پرداخت",
+    "cardNumberLabel": "شماره کارت",
+    "notSetYet": "هنوز تنظیم نشده",
+    "cardOwnerPrefix": "به نام",
+    "cardToCard": "کارت‌به‌کارت",
+    "onlinePayment": "پرداخت آنلاین (زرین‌پال)",
+    "uploadReceiptLabel": "آپلود عکس رسید پرداخت",
+    "uploadReceiptError": "لطفاً عکس رسید پرداخت رو آپلود کن.",
+    "uploadError": "خطا در آپلود رسید",
+    "orderError": "خطا در ثبت سفارش",
+    "submitting": "در حال ثبت سفارش...",
+    "submitOrder": "ثبت سفارش",
+    "redirecting": "در حال انتقال به درگاه...",
+    "payAndContinue": "پرداخت و ادامه",
+    "gatewayError": "خطا در اتصال به درگاه پرداخت."
+  },
+  "verify": {
+    "checking": "در حال بررسی پرداخت...",
+    "success": "پرداخت موفق بود ✅ در حال انتقال...",
+    "failed": "پرداخت ناموفق بود یا لغو شد.",
+    "backToCart": "بازگشت به سبد خرید"
+  },
+  "checkoutSuccess": {
+    "title": "سفارش با موفقیت ثبت شد ✅",
+    "message": "رسیدت رو بررسی می‌کنیم و به‌زودی سفارشت رو تایید می‌کنیم.",
+    "backToShop": "بازگشت به فروشگاه"
   }
 }

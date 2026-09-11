@@ -1,18 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useState } from "react";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import { getCart, removeFromCart, updateQuantity, CartItem } from "@/lib/cart";
 
 export default function CartPage() {
-  const [cart, setCart] = useState<CartItem[]>([]);
-
-  useEffect(() => {
-    setCart(getCart());
-  }, []);
+  const t = useTranslations("cart");
+  const tCommon = useTranslations("common");
+  const tNav = useTranslations("nav");
+  const [cart, setCart] = useState<CartItem[]>(() => getCart());
 
   function handleRemove(code: string) {
     removeFromCart(code);
@@ -30,18 +30,18 @@ export default function CartPage() {
     <>
       <Header />
 
-      <main className="min-h-screen bg-[#090909] pt-40 pb-24 text-white" dir="rtl">
+      <main className="min-h-screen bg-[#090909] pt-40 pb-24 text-white">
         <Container>
 
           <h1 className="mb-12 text-center text-4xl font-bold">
-            سبد خرید
+            {tNav("cart")}
           </h1>
 
           {cart.length === 0 ? (
             <div className="text-center text-gray-400">
-              <p className="mb-6">سبد خریدت خالیه.</p>
+              <p className="mb-6">{t("empty")}</p>
               <Link href="/shop" className="text-yellow-600 hover:underline">
-                برو به فروشگاه
+                {t("goToShop")}
               </Link>
             </div>
           ) : (
@@ -62,7 +62,7 @@ export default function CartPage() {
                     <p className="font-bold">{item.title}</p>
                     <p className="text-sm text-gray-400">{item.code}</p>
                     <p className="mt-1 text-yellow-600">
-                      {item.price.toLocaleString()} تومان
+                      {item.price.toLocaleString()} {t("currency")}
                     </p>
                   </div>
 
@@ -86,15 +86,15 @@ export default function CartPage() {
                     onClick={() => handleRemove(item.code)}
                     className="text-red-400 hover:text-red-300"
                   >
-                    حذف
+                    {t("remove")}
                   </button>
                 </div>
               ))}
 
               <div className="flex items-center justify-between border-t border-white/10 pt-6 text-xl font-bold">
-                <span>جمع کل</span>
+                <span>{tCommon("total")}</span>
                 <span className="text-yellow-600">
-                  {total.toLocaleString()} تومان
+                  {total.toLocaleString()} {t("currency")}
                 </span>
               </div>
 
@@ -102,7 +102,7 @@ export default function CartPage() {
                 href="/checkout"
                 className="block w-full rounded-xl border border-yellow-600 bg-black/30 px-8 py-4 text-center text-white transition-all duration-300 hover:bg-yellow-700 hover:text-black"
               >
-                ادامه‌ی خرید
+                {t("continueButton")}
               </Link>
 
             </div>
