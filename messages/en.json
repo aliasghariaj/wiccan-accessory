@@ -130,5 +130,27 @@
     "title": "Order placed successfully ✅",
     "message": "We'll review your receipt and confirm your order soon.",
     "backToShop": "Back to shop"
+  },
+  "auth": {
+    "loginTab": "Login",
+    "registerTab": "Sign up",
+    "usernameLabel": "Username",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "pleaseWait": "Please wait...",
+    "createAccount": "Create account",
+    "registerSuccess": "Registration successful! Check your email to confirm."
+  },
+  "profile": {
+    "title": "My Profile",
+    "usernameLabel": "Username",
+    "locationAddressLabel": "Location address",
+    "postalAddressLabel": "Postal address",
+    "instagramLabel": "Instagram ID",
+    "saveError": "Error saving",
+    "saveSuccess": "Information saved ✅",
+    "saving": "Saving...",
+    "saveChanges": "Save changes",
+    "logout": "Log out"
   }
 }

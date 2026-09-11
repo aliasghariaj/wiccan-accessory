@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabase";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -9,6 +10,9 @@ import Container from "@/components/common/Container";
 
 export default function ProfilePage() {
   const router = useRouter();
+  const t = useTranslations("profile");
+  const tCheckout = useTranslations("checkout");
+  const tCommon = useTranslations("common");
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -69,7 +73,7 @@ export default function ProfilePage() {
       })
       .eq("id", userId);
 
-    setMessage(error ? "خطا در ذخیره‌سازی" : "اطلاعات ذخیره شد ✅");
+    setMessage(error ? t("saveError") : t("saveSuccess"));
     setSaving(false);
   }
 
@@ -81,7 +85,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#090909] text-white">
-        <p>در حال بارگذاری...</p>
+        <p>{tCommon("loading")}</p>
       </main>
     );
   }
@@ -92,16 +96,16 @@ export default function ProfilePage() {
 
       <main className="min-h-screen bg-[#090909] pt-40 pb-24 text-white">
         <Container>
-          <div className="mx-auto max-w-md" dir="rtl">
+          <div className="mx-auto max-w-md">
 
             <h1 className="mb-10 text-center text-3xl font-bold">
-              پروفایل من
+              {t("title")}
             </h1>
 
             <div className="space-y-5 rounded-2xl border border-white/10 bg-white/5 p-8">
 
               <div>
-                <label className="mb-2 block text-sm text-gray-400">یوزرنیم</label>
+                <label className="mb-2 block text-sm text-gray-400">{t("usernameLabel")}</label>
                 <input
                   type="text"
                   value={username}
@@ -111,7 +115,7 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-gray-400">شماره تماس</label>
+                <label className="mb-2 block text-sm text-gray-400">{tCheckout("phoneLabel")}</label>
                 <input
                   type="tel"
                   value={phone}
@@ -121,7 +125,7 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-gray-400">آدرس لوکیشن</label>
+                <label className="mb-2 block text-sm text-gray-400">{t("locationAddressLabel")}</label>
                 <input
                   type="text"
                   value={locationAddress}
@@ -131,7 +135,7 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-gray-400">آدرس پستی</label>
+                <label className="mb-2 block text-sm text-gray-400">{t("postalAddressLabel")}</label>
                 <textarea
                   value={postalAddress}
                   onChange={(e) => setPostalAddress(e.target.value)}
@@ -141,7 +145,7 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-gray-400">آیدی اینستاگرام</label>
+                <label className="mb-2 block text-sm text-gray-400">{t("instagramLabel")}</label>
                 <input
                   type="text"
                   value={instagramId}
@@ -159,14 +163,14 @@ export default function ProfilePage() {
                 disabled={saving}
                 className="w-full rounded-xl border border-yellow-600 bg-black/30 px-8 py-4 text-white transition-all duration-300 hover:bg-yellow-700 hover:text-black disabled:opacity-50"
               >
-                {saving ? "در حال ذخیره..." : "ذخیره تغییرات"}
+                {saving ? t("saving") : t("saveChanges")}
               </button>
 
               <button
                 onClick={handleLogout}
                 className="w-full rounded-xl border border-red-800 px-8 py-4 text-red-400 transition-all duration-300 hover:bg-red-900/30"
               >
-                خروج از حساب
+                {t("logout")}
               </button>
 
             </div>

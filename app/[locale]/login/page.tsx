@@ -2,11 +2,13 @@
 
 import { supabase } from "@/lib/supabase";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 
 export default function LoginPage() {
+  const t = useTranslations("auth");
   const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,7 +51,7 @@ export default function LoginPage() {
         });
       }
 
-      setErrorMsg("ثبت‌نام موفق! ایمیلت رو برای تایید چک کن.");
+      setErrorMsg(t("registerSuccess"));
     } else {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -74,7 +76,7 @@ export default function LoginPage() {
 
       <main className="min-h-screen bg-[#090909] pt-40 pb-24 text-white">
         <Container>
-          <div className="mx-auto max-w-md" dir="rtl">
+          <div className="mx-auto max-w-md">
             {/* تب‌های ورود/ثبت‌نام */}
             <div className="mb-10 flex justify-center gap-4">
               <button
@@ -85,7 +87,7 @@ export default function LoginPage() {
                     : "border border-white/10 text-gray-300"
                 }`}
               >
-                ورود
+                {t("loginTab")}
               </button>
               <button
                 onClick={() => setMode("register")}
@@ -95,7 +97,7 @@ export default function LoginPage() {
                     : "border border-white/10 text-gray-300"
                 }`}
               >
-                ثبت‌نام
+                {t("registerTab")}
               </button>
             </div>
 
@@ -103,7 +105,7 @@ export default function LoginPage() {
               {mode === "register" && (
                 <div>
                   <label className="mb-2 block text-sm text-gray-400">
-                    یوزرنیم
+                    {t("usernameLabel")}
                   </label>
                   <input
                     type="text"
@@ -116,7 +118,7 @@ export default function LoginPage() {
 
               <div>
                 <label className="mb-2 block text-sm text-gray-400">
-                  ایمیل
+                  {t("emailLabel")}
                 </label>
                 <input
                   type="email"
@@ -128,7 +130,7 @@ export default function LoginPage() {
 
               <div>
                 <label className="mb-2 block text-sm text-gray-400">
-                  رمز عبور
+                  {t("passwordLabel")}
                 </label>
                 <input
                   type="password"
@@ -146,10 +148,10 @@ export default function LoginPage() {
                 className="mt-8 w-full rounded-xl border border-yellow-600 bg-black/30 px-8 py-4 text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-yellow-500 hover:bg-yellow-700 hover:text-black disabled:opacity-50"
               >
                 {loading
-                  ? "لطفاً صبر کن..."
+                  ? t("pleaseWait")
                   : mode === "login"
-                    ? "ورود"
-                    : "ایجاد حساب"}
+                    ? t("loginTab")
+                    : t("createAccount")}
               </button>
             </div>
           </div>

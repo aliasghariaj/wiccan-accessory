@@ -130,5 +130,27 @@
     "title": "سفارش با موفقیت ثبت شد ✅",
     "message": "رسیدت رو بررسی می‌کنیم و به‌زودی سفارشت رو تایید می‌کنیم.",
     "backToShop": "بازگشت به فروشگاه"
+  },
+  "auth": {
+    "loginTab": "ورود",
+    "registerTab": "ثبت‌نام",
+    "usernameLabel": "یوزرنیم",
+    "emailLabel": "ایمیل",
+    "passwordLabel": "رمز عبور",
+    "pleaseWait": "لطفاً صبر کن...",
+    "createAccount": "ایجاد حساب",
+    "registerSuccess": "ثبت‌نام موفق! ایمیلت رو برای تایید چک کن."
+  },
+  "profile": {
+    "title": "پروفایل من",
+    "usernameLabel": "یوزرنیم",
+    "locationAddressLabel": "آدرس لوکیشن",
+    "postalAddressLabel": "آدرس پستی",
+    "instagramLabel": "آیدی اینستاگرام",
+    "saveError": "خطا در ذخیره‌سازی",
+    "saveSuccess": "اطلاعات ذخیره شد ✅",
+    "saving": "در حال ذخیره...",
+    "saveChanges": "ذخیره تغییرات",
+    "logout": "خروج از حساب"
   }
 }
