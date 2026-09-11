@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getMessages, getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { Vazirmatn } from "next/font/google";
@@ -12,10 +12,37 @@ const vazirmatn = Vazirmatn({
   variable: "--font-vazirmatn",
 });
 
-export const metadata: Metadata = {
-  title: "Wiccan Accessory",
-  description: "Handmade Gothic, Medieval and Fantasy Accessories by Orkideh",
-};
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wiccanaccessory.com";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "seo" });
+
+  return {
+    title: t("title"),
+    description: t("description"),
+    metadataBase: new URL(siteUrl),
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        fa: "/fa",
+        en: "/en",
+        "x-default": "/fa",
+      },
+    },
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      siteName: "Wiccan Accessory",
+      locale: locale === "fa" ? "fa_IR" : "en_US",
+      type: "website",
+    },
+  };
+}
 
 export default async function LocaleLayout({
   children,
