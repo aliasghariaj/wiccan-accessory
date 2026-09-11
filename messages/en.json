@@ -152,5 +152,21 @@
     "saving": "Saving...",
     "saveChanges": "Save changes",
     "logout": "Log out"
+  },
+  "about": {
+    "title": "About Orchid",
+    "paragraph1": "Orchid has been working in customer experience, sales, and the making of magical accessories for close to two years — accessories crafted with magical stones in gothic, medieval, and bone-inspired styles.",
+    "paragraph2Start": "She was born and raised in Rasht. She started her work in 1403 (2024), and after a journey of change and experimentation, eventually chose the name",
+    "paragraph2End": "for her craft — a distinctive blend of bone and magical stones that forms the core identity of the brand.",
+    "paragraph3Start": "Orchid's deep interest in the world of",
+    "paragraph3End": ", symbols and magic is the main inspiration behind her designs — a world reflected in the details of every handmade piece.",
+    "paragraph4": "Alongside accessory-making, Orchid is a soprano singer in European folklore, metal, rock, blues and jazz styles. Her musical interests also extend to grunge, progressive rock, blues, folklore and American country — another facet of her artistic identity beyond her craft."
+  },
+  "contact": {
+    "emailLabel": "Email",
+    "comingSoon": "Coming soon"
+  },
+  "international": {
+    "message": "This section will be available soon for customers outside Iran."
   }
 }

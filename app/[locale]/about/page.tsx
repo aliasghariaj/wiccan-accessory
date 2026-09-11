@@ -1,13 +1,18 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 
 export default function AboutPage() {
+  const t = useTranslations("about");
+
   return (
     <>
       <Header />
 
-      <main className="min-h-screen bg-[#090909] pt-32 pb-24 text-white" dir="rtl">
+      <main className="min-h-screen bg-[#090909] pt-32 pb-24 text-white">
         <Container>
           <div className="mx-auto max-w-2xl">
 
@@ -16,39 +21,30 @@ export default function AboutPage() {
             </p>
 
             <h1 className="mb-12 text-center text-5xl font-bold">
-              درباره‌ی ارکیده
+              {t("title")}
             </h1>
 
             <div className="space-y-6 text-lg leading-10 text-gray-300">
               <p>
-                ارکیده نزدیک به دو سال است که در زمینه‌ی تجربه‌ی مشتری، فروش،
-                و ساخت اکسسوری‌های جادویی فعالیت می‌کند؛ اکسسوری‌هایی که با
-                سنگ‌های جادویی و در سبک‌های گاتیک، مدیوال و استخوان ساخته می‌شوند.
+                {t("paragraph1")}
               </p>
 
               <p>
-                او متولد و اهل رشت است. فعالیت خودش را از سال ۱۴۰۳ آغاز کرد و
-                پس از مسیری پر از تغییر و آزمون، در نهایت نام{" "}
+                {t("paragraph2Start")}{" "}
                 <span dir="ltr" className="font-bold text-yellow-500">
                   Wiccan
                 </span>{" "}
-                را برای سبک کاری‌اش برگزید؛ ترکیبی خاص از استخوان و سنگ‌های
-                جادویی که هویت اصلی برند را می‌سازد.
+                {t("paragraph2End")}
               </p>
 
               <p>
-                علاقه‌ی عمیق ارکیده به دنیای{" "}
-                <span dir="ltr">witchcraft</span>، نمادها و جادوگری، الهام‌بخش
-                اصلی طراحی‌های اوست؛ دنیایی که در جزئیات هر قطعه‌ی دست‌ساز
-                قابل مشاهده است.
+                {t("paragraph3Start")}{" "}
+                <span dir="ltr">witchcraft</span>
+                {t("paragraph3End")}
               </p>
 
               <p>
-                در کنار اکسسوری‌سازی، ارکیده خواننده‌ی سوپرانو در سبک فولکلور
-                اروپایی، متال، راک، بلوز و جز است. علاقه‌ی موسیقایی او همچنین
-                شامل گرانج، پراگرسیو راک، بلوز، فولکلور و کانتری آمریکایی هم
-                می‌شود — دنیایی که در کنار اکسسوری‌سازی، بخش دیگری از هویت
-                هنری او را شکل می‌دهد.
+                {t("paragraph4")}
               </p>
             </div>
 
