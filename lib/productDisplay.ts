@@ -1,3 +1,5 @@
+import { translateMaterialsToEnglish } from "@/lib/materialsEn";
+
 type ProductLike = {
   title: string;
   title_en?: string | null;
@@ -19,5 +21,6 @@ export function getDisplayDescription(product: ProductLike, locale: string): str
 
 export function getDisplayMaterials(product: ProductLike, locale: string): string[] {
   if (locale === "fa") return product.materials || [];
-  return product.materials_en || product.materials || [];
+  if (product.materials_en && product.materials_en.length > 0) return product.materials_en;
+  return translateMaterialsToEnglish(product.materials || []);
 }

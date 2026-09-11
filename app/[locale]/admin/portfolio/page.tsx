@@ -18,6 +18,8 @@ export default function AdminPortfolioPage() {
   const [category, setCategory] = useState<"music" | "accessory">("music");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [titleEn, setTitleEn] = useState("");
+  const [descriptionEn, setDescriptionEn] = useState("");
   const [mediaType, setMediaType] = useState<"photo" | "video" | "text">("photo");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [videoUrl, setVideoUrl] = useState("");
@@ -72,6 +74,8 @@ export default function AdminPortfolioPage() {
       category,
       title,
       description,
+      title_en: titleEn || null,
+      description_en: descriptionEn || null,
       media_type: mediaType,
       image_url: imageUrl || null,
       video_url: mediaType === "video" ? videoUrl : null,
@@ -84,6 +88,8 @@ export default function AdminPortfolioPage() {
       setMessage("پست با موفقیت اضافه شد ✅");
       setTitle("");
       setDescription("");
+      setTitleEn("");
+      setDescriptionEn("");
       setImageFile(null);
       setVideoUrl("");
       setActivityDate("");
@@ -157,17 +163,17 @@ export default function AdminPortfolioPage() {
             <div>
               <label className="mb-2 block text-sm text-gray-400">نوع محتوا</label>
               <div className="flex gap-3">
-                {(["photo", "video", "text"] as const).map((t) => (
+                {(["photo", "video", "text"] as const).map((mt) => (
                   <button
-                    key={t}
-                    onClick={() => setMediaType(t)}
+                    key={mt}
+                    onClick={() => setMediaType(mt)}
                     className={`flex-1 rounded-lg border px-4 py-2 text-sm transition ${
-                      mediaType === t
+                      mediaType === mt
                         ? "border-yellow-600 bg-yellow-700/20 text-yellow-500"
                         : "border-white/10 text-gray-300"
                     }`}
                   >
-                    {t === "photo" ? "عکس" : t === "video" ? "ویدیو" : "فقط متن"}
+                    {mt === "photo" ? "عکس" : mt === "video" ? "ویدیو" : "فقط متن"}
                   </button>
                 ))}
               </div>
@@ -208,6 +214,33 @@ export default function AdminPortfolioPage() {
                 rows={5}
                 className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
               />
+            </div>
+
+            <div className="space-y-5 border-t border-white/10 pt-8">
+              <h2 className="text-lg font-bold text-yellow-600">
+                انگلیسی <span className="text-sm font-normal text-gray-500">(اختیاری)</span>
+              </h2>
+
+              <div>
+                <label className="mb-2 block text-sm text-gray-400" dir="ltr">Title (English)</label>
+                <input
+                  dir="ltr"
+                  value={titleEn}
+                  onChange={(e) => setTitleEn(e.target.value)}
+                  className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm text-gray-400" dir="ltr">Description (English)</label>
+                <textarea
+                  dir="ltr"
+                  value={descriptionEn}
+                  onChange={(e) => setDescriptionEn(e.target.value)}
+                  rows={5}
+                  className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+                />
+              </div>
             </div>
 
             {message && <p className="text-sm text-yellow-500">{message}</p>}

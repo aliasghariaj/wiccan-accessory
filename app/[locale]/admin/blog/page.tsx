@@ -18,6 +18,9 @@ export default function AdminBlogPage() {
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
+  const [titleEn, setTitleEn] = useState("");
+  const [excerptEn, setExcerptEn] = useState("");
+  const [contentEn, setContentEn] = useState("");
   const [coverFile, setCoverFile] = useState<File | null>(null);
 
   const [message, setMessage] = useState("");
@@ -73,6 +76,9 @@ export default function AdminBlogPage() {
       title,
       excerpt,
       content,
+      title_en: titleEn || null,
+      excerpt_en: excerptEn || null,
+      content_en: contentEn || null,
       cover_image_url: coverImageUrl,
     });
 
@@ -83,6 +89,9 @@ export default function AdminBlogPage() {
       setTitle("");
       setExcerpt("");
       setContent("");
+      setTitleEn("");
+      setExcerptEn("");
+      setContentEn("");
       setCoverFile(null);
     }
 
@@ -106,40 +115,89 @@ export default function AdminBlogPage() {
 
           <AdminNav />
 
-          <div className="mx-auto max-w-2xl space-y-5 rounded-2xl border border-white/10 bg-white/5 p-8">
-            <div>
-              <label className="mb-2 block text-sm text-gray-400">
-                عنوان پست
-              </label>
-              <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
-              />
+          <div className="mx-auto max-w-2xl space-y-8 rounded-2xl border border-white/10 bg-white/5 p-8">
+
+            <div className="space-y-5">
+              <h2 className="text-lg font-bold text-yellow-600">فارسی</h2>
+
+              <div>
+                <label className="mb-2 block text-sm text-gray-400">
+                  عنوان پست
+                </label>
+                <input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm text-gray-400">
+                  خلاصه‌ی کوتاه (برای نمایش توی لیست وبلاگ)
+                </label>
+                <textarea
+                  value={excerpt}
+                  onChange={(e) => setExcerpt(e.target.value)}
+                  rows={2}
+                  className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm text-gray-400">
+                  متن کامل پست
+                </label>
+                <textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  rows={12}
+                  className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+                />
+              </div>
             </div>
 
-            <div>
-              <label className="mb-2 block text-sm text-gray-400">
-                خلاصه‌ی کوتاه (برای نمایش توی لیست وبلاگ)
-              </label>
-              <textarea
-                value={excerpt}
-                onChange={(e) => setExcerpt(e.target.value)}
-                rows={2}
-                className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
-              />
-            </div>
+            <div className="space-y-5 border-t border-white/10 pt-8">
+              <h2 className="text-lg font-bold text-yellow-600">
+                انگلیسی <span className="text-sm font-normal text-gray-500">(اختیاری — اگه خالی بمونه، نسخه‌ی فارسی نشون داده می‌شه)</span>
+              </h2>
 
-            <div>
-              <label className="mb-2 block text-sm text-gray-400">
-                متن کامل پست
-              </label>
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                rows={12}
-                className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
-              />
+              <div>
+                <label className="mb-2 block text-sm text-gray-400" dir="ltr">
+                  Title (English)
+                </label>
+                <input
+                  dir="ltr"
+                  value={titleEn}
+                  onChange={(e) => setTitleEn(e.target.value)}
+                  className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm text-gray-400" dir="ltr">
+                  Short excerpt (English)
+                </label>
+                <textarea
+                  dir="ltr"
+                  value={excerptEn}
+                  onChange={(e) => setExcerptEn(e.target.value)}
+                  rows={2}
+                  className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm text-gray-400" dir="ltr">
+                  Full content (English)
+                </label>
+                <textarea
+                  dir="ltr"
+                  value={contentEn}
+                  onChange={(e) => setContentEn(e.target.value)}
+                  rows={12}
+                  className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+                />
+              </div>
             </div>
 
             <div>

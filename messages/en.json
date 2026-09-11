@@ -168,5 +168,14 @@
   },
   "international": {
     "message": "This section will be available soon for customers outside Iran."
+  },
+  "blog": {
+    "empty": "No posts published yet.",
+    "notFound": "Post not found."
+  },
+  "portfolio": {
+    "accessoryTitle": "Accessory Portfolio",
+    "musicTitle": "Music Portfolio",
+    "empty": "No posts added yet."
   }
 }
