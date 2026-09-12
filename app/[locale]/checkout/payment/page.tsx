@@ -147,10 +147,14 @@ export default function PaymentPage() {
           fullName: orderInfo.fullName,
           username,
           phone: orderInfo.phone,
+          city: orderInfo.city,
+          postalCode: orderInfo.postalCode,
+          address: orderInfo.address,
           items: orderInfo.items,
           grandTotal: orderInfo.grandTotal,
           paid: false,
         }),
+        photoUrl: urlData.publicUrl,
       }),
     });
 

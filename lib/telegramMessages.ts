@@ -1,4 +1,5 @@
 type OrderItemForMessage = {
+  code: string;
   title: string;
   quantity: number;
 };
@@ -7,6 +8,9 @@ export function buildOrderPlacedMessage(params: {
   fullName: string;
   username: string | null;
   phone: string;
+  city: string;
+  postalCode: string;
+  address: string;
   items: OrderItemForMessage[];
   grandTotal: number;
   paid: boolean;
@@ -14,14 +18,17 @@ export function buildOrderPlacedMessage(params: {
   const now = new Date();
   const date = now.toLocaleDateString("fa-IR");
   const time = now.toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" });
-  const itemsList = params.items.map((i) => `• ${i.title} × ${i.quantity}`).join("\n");
+  const itemsList = params.items
+    .map((i) => `• [${i.code}] ${i.title} × ${i.quantity}`)
+    .join("\n");
   const paymentStatus = params.paid ? "پرداخت شده ✅" : "در انتظار بررسی رسید ⏳";
 
   return (
     `🛍 <b>سفارش جدید</b>\n\n` +
     `سفارشی در تاریخ ${date} ساعت ${time} با یوزرنیم «${params.username ?? "مهمان"}»، شماره ${params.phone} و نام ${params.fullName} ثبت گردیده است (${paymentStatus}).\n\n` +
     `${itemsList}\n\n` +
-    `💰 مبلغ کل: ${params.grandTotal.toLocaleString()} تومان`
+    `💰 مبلغ کل: ${params.grandTotal.toLocaleString()} تومان\n\n` +
+    `📍 آدرس:\nشهر: ${params.city}\nکد پستی: ${params.postalCode}\n${params.address}`
   );
 }
 
