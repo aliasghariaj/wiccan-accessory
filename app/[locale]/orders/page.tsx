@@ -20,6 +20,7 @@ type OrderItem = {
 
 type Order = {
   id: string;
+  tracking_code: string | null;
   items: OrderItem[];
   grand_total: number;
   status: string;
@@ -130,6 +131,11 @@ export default function OrdersPage() {
                   key={order.id}
                   className="rounded-2xl border border-white/10 bg-white/5 p-6"
                 >
+                  {order.tracking_code && (
+                    <p className="mb-2 text-sm font-bold tracking-widest text-yellow-500">
+                      {t("trackingCode")}: {order.tracking_code}
+                    </p>
+                  )}
                   <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                     <span className="text-sm text-gray-500">
                       {t("orderDate")}: {new Date(order.created_at).toLocaleDateString(

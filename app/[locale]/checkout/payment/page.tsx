@@ -8,7 +8,7 @@ import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import { supabase } from "@/lib/supabase";
 import { formatPrice } from "@/lib/formatPrice";
-import { buildOrderPlacedMessage } from "@/lib/telegramMessages";
+import { buildOrderPlacedMessage, generateTrackingCode } from "@/lib/telegramMessages";
 
 type OrderItem = {
   code: string;
@@ -129,8 +129,9 @@ export default function PaymentPage() {
         payment_method: "card-to-card",
         payment_receipt_url: urlData.publicUrl,
         status: "pending",
+        tracking_code: generateTrackingCode(),
       })
-      .select("id")
+      .select("id, tracking_code")
       .single();
 
     if (insertError) {
@@ -144,6 +145,7 @@ export default function PaymentPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message: buildOrderPlacedMessage({
+          trackingCode: insertedOrder.tracking_code,
           fullName: orderInfo.fullName,
           username,
           phone: orderInfo.phone,
@@ -159,7 +161,7 @@ export default function PaymentPage() {
     });
 
     localStorage.removeItem("wiccan_cart");
-    router.push(`/checkout/success?order=${insertedOrder.id}`);
+    router.push(`/checkout/success?order=${insertedOrder.id}&tracking=${insertedOrder.tracking_code}`);
   }
 
   async function handleZarinpalPayment() {

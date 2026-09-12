@@ -117,6 +117,7 @@
     "itemsLabel": "Order items",
     "viewReceipt": "View payment receipt",
     "orderDate": "Order date",
+    "trackingCode": "Tracking code",
     "messageMaker": "Message maker"
   },
   "payment": {
@@ -148,6 +149,7 @@
     "message": "We'll review your receipt and confirm your order soon.",
     "backToShop": "Back to shop",
     "instructionMessage": "⚠️ Please make sure to message the maker of each item on Telegram for faster order updates.",
+    "trackingCodeLabel": "Order tracking code",
     "deliveryEstimate": "Crafting time: {crafting} business days + Delivery: {delivery} business days",
     "messageMakerButton": "Message the maker on Telegram"
   },

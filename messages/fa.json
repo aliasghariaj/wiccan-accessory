@@ -117,6 +117,7 @@
     "itemsLabel": "اقلام سفارش",
     "viewReceipt": "مشاهده رسید پرداخت",
     "orderDate": "تاریخ ثبت",
+    "trackingCode": "کد رهگیری",
     "messageMaker": "پیام به سازنده"
   },
   "payment": {
@@ -148,6 +149,7 @@
     "message": "رسیدت رو بررسی می‌کنیم و به‌زودی سفارشت رو تایید می‌کنیم.",
     "backToShop": "بازگشت به فروشگاه",
     "instructionMessage": "⚠️ حتماً برای پیگیری سریع‌تر سفارش، به سازنده‌ی هر محصول توی تلگرام پیام بدید.",
+    "trackingCodeLabel": "کد رهگیری سفارش",
     "deliveryEstimate": "زمان ساخت: {crafting} روز کاری + زمان ارسال: {delivery} روز کاری",
     "messageMakerButton": "پیام به سازنده در تلگرام"
   },

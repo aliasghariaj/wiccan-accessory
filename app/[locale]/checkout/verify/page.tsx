@@ -8,7 +8,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import { supabase } from "@/lib/supabase";
-import { buildOrderPlacedMessage } from "@/lib/telegramMessages";
+import { buildOrderPlacedMessage, generateTrackingCode } from "@/lib/telegramMessages";
 
 type OrderItem = {
   code: string;
@@ -96,8 +96,9 @@ export default function VerifyPage() {
           grand_total: orderInfo.grandTotal,
           payment_method: "zarinpal",
           status: "confirmed",
+          tracking_code: generateTrackingCode(),
         })
-        .select("id")
+        .select("id, tracking_code")
         .single();
 
       await fetch("/api/telegram/notify", {
@@ -105,6 +106,7 @@ export default function VerifyPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: buildOrderPlacedMessage({
+            trackingCode: insertedOrder?.tracking_code ?? "----",
             fullName: orderInfo.fullName,
             username,
             phone: orderInfo.phone,
@@ -122,7 +124,7 @@ export default function VerifyPage() {
       setStatus("success");
 
       setTimeout(
-        () => router.push(`/checkout/success?order=${insertedOrder?.id ?? ""}`),
+        () => router.push(`/checkout/success?order=${insertedOrder?.id ?? ""}&tracking=${insertedOrder?.tracking_code ?? ""}`),
         1500
       );
     }

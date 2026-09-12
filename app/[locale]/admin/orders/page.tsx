@@ -14,6 +14,7 @@ const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
 
 type Order = {
   id: string;
+  tracking_code: string | null;
   full_name: string;
   phone: string;
   postal_code: string;
@@ -87,7 +88,10 @@ export default function AdminOrdersPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: buildOrderStatusMessage({
+            trackingCode: order.tracking_code ?? "----",
             fullName: order.full_name,
+            phone: order.phone,
+            orderCreatedAt: order.created_at,
             status: newStatus,
           }),
         }),
@@ -146,7 +150,14 @@ export default function AdminOrdersPage() {
                       تکمیل و تحویل داده شد
                     </label>
                     <div>
-                      <p className="font-bold">{order.full_name}</p>
+                      <p className="font-bold">
+                        {order.full_name}
+                        {order.tracking_code && (
+                          <span className="mr-2 rounded-full border border-yellow-700 px-2 py-0.5 text-xs font-normal text-yellow-500">
+                            #{order.tracking_code}
+                          </span>
+                        )}
+                      </p>
                       <p className="text-sm text-gray-400">
                         {new Date(order.created_at).toLocaleString("fa-IR")}
                       </p>

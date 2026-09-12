@@ -4,7 +4,19 @@ type OrderItemForMessage = {
   quantity: number;
 };
 
+export function generateTrackingCode(): string {
+  return String(Math.floor(1000 + Math.random() * 9000));
+}
+
+function formatDateTime(d: Date) {
+  return {
+    date: d.toLocaleDateString("fa-IR"),
+    time: d.toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" }),
+  };
+}
+
 export function buildOrderPlacedMessage(params: {
+  trackingCode: string;
   fullName: string;
   username: string | null;
   phone: string;
@@ -15,9 +27,7 @@ export function buildOrderPlacedMessage(params: {
   grandTotal: number;
   paid: boolean;
 }): string {
-  const now = new Date();
-  const date = now.toLocaleDateString("fa-IR");
-  const time = now.toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" });
+  const { date, time } = formatDateTime(new Date());
   const itemsList = params.items
     .map((i) => `• [${i.code}] ${i.title} × ${i.quantity}`)
     .join("\n");
@@ -25,23 +35,42 @@ export function buildOrderPlacedMessage(params: {
 
   return (
     `🛍 <b>سفارش جدید</b>\n\n` +
-    `سفارشی در تاریخ ${date} ساعت ${time} با یوزرنیم «${params.username ?? "مهمان"}»، شماره ${params.phone} و نام ${params.fullName} ثبت گردیده است (${paymentStatus}).\n\n` +
-    `${itemsList}\n\n` +
+    `🔖 کد رهگیری: <b>${params.trackingCode}</b>\n` +
+    `📅 تاریخ: ${date} — ساعت ${time}\n` +
+    `👤 نام: ${params.fullName}\n` +
+    `🆔 یوزرنیم: ${params.username ?? "مهمان"}\n` +
+    `📞 شماره تماس: ${params.phone}\n` +
+    `💳 وضعیت پرداخت: ${paymentStatus}\n\n` +
+    `🛒 <b>اقلام سفارش:</b>\n${itemsList}\n\n` +
     `💰 مبلغ کل: ${params.grandTotal.toLocaleString()} تومان\n\n` +
-    `📍 آدرس:\nشهر: ${params.city}\nکد پستی: ${params.postalCode}\n${params.address}`
+    `📍 <b>آدرس:</b>\nشهر: ${params.city}\nکد پستی: ${params.postalCode}\n${params.address}`
   );
 }
 
-const statusLabels: Record<string, string> = {
-  confirmed: "تایید شد ✅",
-  shipped: "ارسال شد 📦",
-  cancelled: "لغو شد ❌",
+const statusMeta: Record<string, { label: string; emoji: string }> = {
+  confirmed: { label: "تایید شد", emoji: "✅" },
+  shipped: { label: "ارسال شد", emoji: "📦" },
+  cancelled: { label: "لغو شد", emoji: "❌" },
 };
 
 export function buildOrderStatusMessage(params: {
+  trackingCode: string;
   fullName: string;
+  phone: string;
+  orderCreatedAt: string;
   status: string;
 }): string {
-  const label = statusLabels[params.status] ?? params.status;
-  return `🔔 وضعیت سفارش «${params.fullName}» تغییر کرد: ${label}`;
+  const meta = statusMeta[params.status] ?? { label: params.status, emoji: "🔔" };
+  const { date: orderDate } = formatDateTime(new Date(params.orderCreatedAt));
+  const { date: changeDate, time: changeTime } = formatDateTime(new Date());
+
+  return (
+    `${meta.emoji} <b>تغییر وضعیت سفارش</b>\n\n` +
+    `🔖 کد رهگیری: <b>${params.trackingCode}</b>\n` +
+    `👤 نام: ${params.fullName}\n` +
+    `📞 شماره تماس: ${params.phone}\n` +
+    `📅 تاریخ ثبت سفارش: ${orderDate}\n\n` +
+    `📌 وضعیت جدید: <b>${meta.label} ${meta.emoji}</b>\n` +
+    `⏰ زمان تغییر: ${changeDate} — ساعت ${changeTime}`
+  );
 }

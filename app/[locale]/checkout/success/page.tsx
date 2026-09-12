@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabase";
@@ -31,6 +32,8 @@ type ItemDetails = {
 
 export default function SuccessPage() {
   const t = useTranslations("checkoutSuccess");
+  const searchParams = useSearchParams();
+  const trackingCode = searchParams.get("tracking");
 
   const [orderInfo] = useState<OrderInfo | null>(() => {
     if (typeof window === "undefined") return null;
@@ -87,6 +90,14 @@ export default function SuccessPage() {
             <p className="mb-4 text-gray-400">
               {t("message")}
             </p>
+
+            {trackingCode && (
+              <div className="mb-6 inline-block rounded-xl border border-yellow-700 bg-yellow-900/10 px-6 py-3">
+                <p className="text-sm text-gray-400">{t("trackingCodeLabel")}</p>
+                <p className="text-2xl font-bold tracking-widest text-yellow-500">{trackingCode}</p>
+              </div>
+            )}
+
             <p className="mb-10 text-sm text-yellow-500">
               {t("instructionMessage")}
             </p>
