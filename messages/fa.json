@@ -12,7 +12,8 @@
     "international": "سفارش خارجی",
     "login": "ثبت‌نام | ورود",
     "cart": "سبد خرید",
-    "profile": "پروفایل"
+    "profile": "پروفایل",
+    "orders": "سفارش‌ها"
   },
   "common": {
     "all": "همه",
@@ -84,6 +85,7 @@
     "title": "تکمیل سفارش",
     "fullNameLabel": "نام و نام خانوادگی",
     "phoneLabel": "شماره تماس",
+    "phoneHint": "(شماره‌ای که توی تلگرام ثبت هست)",
     "postalCodeLabel": "کد پستی",
     "cityLabel": "شهر",
     "cityPlaceholder": "انتخاب کن...",
@@ -114,7 +116,8 @@
     "statusCancelled": "لغو شده",
     "itemsLabel": "اقلام سفارش",
     "viewReceipt": "مشاهده رسید پرداخت",
-    "orderDate": "تاریخ ثبت"
+    "orderDate": "تاریخ ثبت",
+    "messageMaker": "پیام به سازنده"
   },
   "payment": {
     "title": "پرداخت",
@@ -143,7 +146,10 @@
   "checkoutSuccess": {
     "title": "سفارش با موفقیت ثبت شد ✅",
     "message": "رسیدت رو بررسی می‌کنیم و به‌زودی سفارشت رو تایید می‌کنیم.",
-    "backToShop": "بازگشت به فروشگاه"
+    "backToShop": "بازگشت به فروشگاه",
+    "instructionMessage": "⚠️ حتماً برای پیگیری سریع‌تر سفارش، به سازنده‌ی هر محصول توی تلگرام پیام بدید.",
+    "deliveryEstimate": "زمان ساخت: {crafting} روز کاری + زمان ارسال: {delivery} روز کاری",
+    "messageMakerButton": "پیام به سازنده در تلگرام"
   },
   "auth": {
     "loginTab": "ورود",

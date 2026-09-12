@@ -8,6 +8,7 @@ import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import { supabase } from "@/lib/supabase";
 import { formatPrice } from "@/lib/formatPrice";
+import { buildOrderPlacedMessage } from "@/lib/telegramMessages";
 
 type OrderItem = {
   code: string;
@@ -84,6 +85,16 @@ export default function PaymentPage() {
     const { data: sessionData } = await supabase.auth.getSession();
     const userId = sessionData.session?.user.id ?? null;
 
+    let username: string | null = null;
+    if (userId) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("username")
+        .eq("id", userId)
+        .single();
+      username = profile?.username ?? null;
+    }
+
     const fileExt = receiptFile.name.split(".").pop();
     const fileName = `${userId ?? "guest"}/${Date.now()}.${fileExt}`;
 
@@ -101,22 +112,26 @@ export default function PaymentPage() {
       .from("receipts")
       .getPublicUrl(fileName);
 
-    const { error: insertError } = await supabase.from("orders").insert({
-      user_id: userId,
-      full_name: orderInfo.fullName,
-      phone: orderInfo.phone,
-      postal_code: orderInfo.postalCode,
-      city: orderInfo.city,
-      address: orderInfo.address,
-      shipping_method: orderInfo.shippingMethod,
-      items: orderInfo.items,
-      products_total: orderInfo.productsTotal,
-      shipping_cost: orderInfo.shippingCost,
-      grand_total: orderInfo.grandTotal,
-      payment_method: "card-to-card",
-      payment_receipt_url: urlData.publicUrl,
-      status: "pending",
-    });
+    const { data: insertedOrder, error: insertError } = await supabase
+      .from("orders")
+      .insert({
+        user_id: userId,
+        full_name: orderInfo.fullName,
+        phone: orderInfo.phone,
+        postal_code: orderInfo.postalCode,
+        city: orderInfo.city,
+        address: orderInfo.address,
+        shipping_method: orderInfo.shippingMethod,
+        items: orderInfo.items,
+        products_total: orderInfo.productsTotal,
+        shipping_cost: orderInfo.shippingCost,
+        grand_total: orderInfo.grandTotal,
+        payment_method: "card-to-card",
+        payment_receipt_url: urlData.publicUrl,
+        status: "pending",
+      })
+      .select("id")
+      .single();
 
     if (insertError) {
       setMessage(`${t("orderError")}: ${insertError.message}`);
@@ -124,21 +139,23 @@ export default function PaymentPage() {
       return;
     }
 
-    const itemsList = orderInfo.items
-      .map((i) => `• ${i.title} × ${i.quantity}`)
-      .join("\n");
-
     fetch("/api/telegram/notify", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        message: `🛍 <b>سفارش جدید (کارت‌به‌کارت)</b>\n\n👤 ${orderInfo.fullName}\n📞 ${orderInfo.phone}\n🏙 ${orderInfo.city}\n\n${itemsList}\n\n💰 مبلغ: ${orderInfo.grandTotal.toLocaleString()} تومان\n\n⚠️ رسید پرداخت رو توی پنل ادمین بررسی کن.`,
+        message: buildOrderPlacedMessage({
+          fullName: orderInfo.fullName,
+          username,
+          phone: orderInfo.phone,
+          items: orderInfo.items,
+          grandTotal: orderInfo.grandTotal,
+          paid: false,
+        }),
       }),
     });
 
-    sessionStorage.removeItem("pendingOrder");
     localStorage.removeItem("wiccan_cart");
-    router.push("/checkout/success");
+    router.push(`/checkout/success?order=${insertedOrder.id}`);
   }
 
   async function handleZarinpalPayment() {

@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { supabase } from "@/lib/supabase";
 import { formatPrice } from "@/lib/formatPrice";
+import { getMakerTelegramLink } from "@/lib/maker";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
@@ -34,6 +35,8 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [makerByCode, setMakerByCode] = useState<Record<string, string | null>>({});
+  const [defaultMakerTelegram, setDefaultMakerTelegram] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadOrders() {
@@ -53,7 +56,34 @@ export default function OrdersPage() {
         .eq("user_id", sessionData.session.user.id)
         .order("created_at", { ascending: false });
 
-      if (data) setOrders(data as Order[]);
+      if (data) {
+        setOrders(data as Order[]);
+
+        const codes = Array.from(
+          new Set((data as Order[]).flatMap((o) => o.items.map((i) => i.code)))
+        );
+
+        if (codes.length > 0) {
+          const { data: products } = await supabase
+            .from("products")
+            .select("code, maker_telegram")
+            .in("code", codes);
+
+          if (products) {
+            const map: Record<string, string | null> = {};
+            for (const p of products) map[p.code] = p.maker_telegram;
+            setMakerByCode(map);
+          }
+        }
+      }
+
+      const { data: settings } = await supabase
+        .from("site_settings")
+        .select("default_maker_telegram")
+        .eq("id", 1)
+        .single();
+      setDefaultMakerTelegram(settings?.default_maker_telegram ?? null);
+
       setLoading(false);
     }
 
@@ -114,12 +144,28 @@ export default function OrdersPage() {
                   </div>
 
                   <p className="mb-2 text-sm text-gray-400">{t("itemsLabel")}:</p>
-                  <ul className="mb-4 space-y-1 text-sm text-gray-300">
-                    {order.items.map((item, i) => (
-                      <li key={i}>
-                        {item.title} × {item.quantity}
-                      </li>
-                    ))}
+                  <ul className="mb-4 space-y-2 text-sm text-gray-300">
+                    {order.items.map((item, i) => {
+                      const makerLink = getMakerTelegramLink(
+                        makerByCode[item.code],
+                        defaultMakerTelegram
+                      );
+                      return (
+                        <li key={i} className="flex flex-wrap items-center justify-between gap-2">
+                          <span>{item.title} × {item.quantity}</span>
+                          {makerLink && (
+                            <a
+                              href={makerLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-yellow-600 hover:underline"
+                            >
+                              💬 {t("messageMaker")}
+                            </a>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
 
                   <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-4">

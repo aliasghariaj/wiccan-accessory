@@ -21,6 +21,7 @@ export default function AdminSettingsPage() {
   const [cardOwnerName, setCardOwnerName] = useState("");
   const [inCityCost, setInCityCost] = useState("50000");
   const [outOfCityCost, setOutOfCityCost] = useState("80000");
+  const [defaultMakerTelegram, setDefaultMakerTelegram] = useState("");
 
   const [message, setMessage] = useState("");
   const [saving, setSaving] = useState(false);
@@ -44,6 +45,7 @@ export default function AdminSettingsPage() {
           setCardOwnerName(settings.card_owner_name ?? "");
           setInCityCost(String(settings.in_city_shipping_cost ?? 50000));
           setOutOfCityCost(String(settings.out_of_city_shipping_cost ?? 80000));
+          setDefaultMakerTelegram(settings.default_maker_telegram ?? "");
         }
       } else {
         router.push("/");
@@ -65,6 +67,7 @@ export default function AdminSettingsPage() {
         card_owner_name: cardOwnerName,
         in_city_shipping_cost: Number(inCityCost),
         out_of_city_shipping_cost: Number(outOfCityCost),
+        default_maker_telegram: defaultMakerTelegram,
         updated_at: new Date().toISOString(),
       })
       .eq("id", 1);
@@ -163,6 +166,20 @@ export default function AdminSettingsPage() {
                   className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
                 />
               </div>
+            </div>
+
+            <div className="border-t border-white/10 pt-8">
+              <h2 className="mb-4 text-lg font-bold text-yellow-600">پیام به سازنده</h2>
+              <label className="mb-2 block text-sm text-gray-400">
+                آیدی تلگرام پیش‌فرض سازنده (بدون @) — برای محصولاتی که آیدی سازنده‌ی جدا ندارن
+              </label>
+              <input
+                dir="ltr"
+                value={defaultMakerTelegram}
+                onChange={(e) => setDefaultMakerTelegram(e.target.value)}
+                placeholder="مثلاً orkideh_wiccan"
+                className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+              />
             </div>
 
             {message && <p className="text-sm text-yellow-500">{message}</p>}

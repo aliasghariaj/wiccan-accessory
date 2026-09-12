@@ -140,7 +140,7 @@ export default function CheckoutPage() {
 
             <div>
               <label className="mb-2 block text-sm text-gray-400">
-                {t("phoneLabel")} *
+                {t("phoneLabel")} * <span className="text-xs text-gray-500">{t("phoneHint")}</span>
               </label>
               <input
                 type="tel"

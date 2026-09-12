@@ -8,6 +8,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import { supabase } from "@/lib/supabase";
+import { buildOrderPlacedMessage } from "@/lib/telegramMessages";
 
 type OrderItem = {
   code: string;
@@ -69,39 +70,58 @@ export default function VerifyPage() {
       const { data: sessionData } = await supabase.auth.getSession();
       const userId = sessionData.session?.user.id ?? null;
 
-      await supabase.from("orders").insert({
-        user_id: userId,
-        full_name: orderInfo.fullName,
-        phone: orderInfo.phone,
-        postal_code: orderInfo.postalCode,
-        city: orderInfo.city,
-        address: orderInfo.address,
-        shipping_method: orderInfo.shippingMethod,
-        items: orderInfo.items,
-        products_total: orderInfo.productsTotal,
-        shipping_cost: orderInfo.shippingCost,
-        grand_total: orderInfo.grandTotal,
-        payment_method: "zarinpal",
-        status: "confirmed",
-      });
+      let username: string | null = null;
+      if (userId) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("username")
+          .eq("id", userId)
+          .single();
+        username = profile?.username ?? null;
+      }
 
-      const itemsList = orderInfo.items
-        .map((i) => `• ${i.title} × ${i.quantity}`)
-        .join("\n");
+      const { data: insertedOrder } = await supabase
+        .from("orders")
+        .insert({
+          user_id: userId,
+          full_name: orderInfo.fullName,
+          phone: orderInfo.phone,
+          postal_code: orderInfo.postalCode,
+          city: orderInfo.city,
+          address: orderInfo.address,
+          shipping_method: orderInfo.shippingMethod,
+          items: orderInfo.items,
+          products_total: orderInfo.productsTotal,
+          shipping_cost: orderInfo.shippingCost,
+          grand_total: orderInfo.grandTotal,
+          payment_method: "zarinpal",
+          status: "confirmed",
+        })
+        .select("id")
+        .single();
 
       await fetch("/api/telegram/notify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: `✅ <b>سفارش جدید (پرداخت آنلاین موفق)</b>\n\n👤 ${orderInfo.fullName}\n📞 ${orderInfo.phone}\n🏙 ${orderInfo.city}\n\n${itemsList}\n\n💰 مبلغ: ${orderInfo.grandTotal.toLocaleString()} تومان\n\nپرداخت تایید شده، آماده‌ی ساخت کن! 🌙`,
+          message: buildOrderPlacedMessage({
+            fullName: orderInfo.fullName,
+            username,
+            phone: orderInfo.phone,
+            items: orderInfo.items,
+            grandTotal: orderInfo.grandTotal,
+            paid: true,
+          }),
         }),
       });
 
-      sessionStorage.removeItem("pendingOrder");
       localStorage.removeItem("wiccan_cart");
       setStatus("success");
 
-      setTimeout(() => router.push("/checkout/success"), 1500);
+      setTimeout(
+        () => router.push(`/checkout/success?order=${insertedOrder?.id ?? ""}`),
+        1500
+      );
     }
 
     verify();

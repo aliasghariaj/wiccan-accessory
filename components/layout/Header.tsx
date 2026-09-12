@@ -126,6 +126,9 @@ export default function Header() {
               <Link href="/profile" className="rounded-lg border border-white/20 px-3 py-2 text-sm hover:border-yellow-600 hover:text-yellow-500 transition">
                 👤 {t("profile")}
               </Link>
+              <Link href="/orders" className="rounded-lg border border-white/20 px-3 py-2 text-sm hover:border-yellow-600 hover:text-yellow-500 transition">
+                📦 {t("orders")}
+              </Link>
               <Link href="/cart" className="relative rounded-lg border border-yellow-700 px-3 py-2 text-sm hover:bg-yellow-700 hover:text-black transition">
                 🛒 {t("cart")}
                 {cartCount > 0 && (
@@ -172,6 +175,7 @@ export default function Header() {
               {isLoggedIn ? (
                 <>
                   <Link href="/profile" onClick={() => setMobileMenuOpen(false)}>👤 {t("profile")}</Link>
+                  <Link href="/orders" onClick={() => setMobileMenuOpen(false)}>📦 {t("orders")}</Link>
                   <Link href="/cart" onClick={() => setMobileMenuOpen(false)}>🛒 {t("cart")} ({cartCount})</Link>
                 </>
               ) : (

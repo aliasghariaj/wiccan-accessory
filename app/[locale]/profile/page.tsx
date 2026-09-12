@@ -122,7 +122,9 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-gray-400">{tCheckout("phoneLabel")}</label>
+                <label className="mb-2 block text-sm text-gray-400">
+                  {tCheckout("phoneLabel")} <span className="text-xs text-gray-500">{tCheckout("phoneHint")}</span>
+                </label>
                 <input
                   type="tel"
                   value={phone}

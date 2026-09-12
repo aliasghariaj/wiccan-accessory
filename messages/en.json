@@ -12,7 +12,8 @@
     "international": "International",
     "login": "Sign up | Login",
     "cart": "Cart",
-    "profile": "Profile"
+    "profile": "Profile",
+    "orders": "Orders"
   },
   "common": {
     "all": "All",
@@ -84,6 +85,7 @@
     "title": "Complete order",
     "fullNameLabel": "Full name",
     "phoneLabel": "Phone number",
+    "phoneHint": "(the number registered on Telegram)",
     "postalCodeLabel": "Postal code",
     "cityLabel": "City",
     "cityPlaceholder": "Select...",
@@ -114,7 +116,8 @@
     "statusCancelled": "Cancelled",
     "itemsLabel": "Order items",
     "viewReceipt": "View payment receipt",
-    "orderDate": "Order date"
+    "orderDate": "Order date",
+    "messageMaker": "Message maker"
   },
   "payment": {
     "title": "Payment",
@@ -143,7 +146,10 @@
   "checkoutSuccess": {
     "title": "Order placed successfully ✅",
     "message": "We'll review your receipt and confirm your order soon.",
-    "backToShop": "Back to shop"
+    "backToShop": "Back to shop",
+    "instructionMessage": "⚠️ Please make sure to message the maker of each item on Telegram for faster order updates.",
+    "deliveryEstimate": "Crafting time: {crafting} business days + Delivery: {delivery} business days",
+    "messageMakerButton": "Message the maker on Telegram"
   },
   "auth": {
     "loginTab": "Login",

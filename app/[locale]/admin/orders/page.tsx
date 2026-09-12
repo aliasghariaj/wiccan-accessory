@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import Container from "@/components/common/Container";
 import { supabase } from "@/lib/supabase";
 import { formatPriceFa } from "@/lib/formatPrice";
+import { buildOrderStatusMessage } from "@/lib/telegramMessages";
 import AdminNav from "@/components/admin/AdminNav";
 
 const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
@@ -44,6 +45,18 @@ export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
+  async function loadOrders() {
+    const { data, error } = await supabase
+      .from("orders")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (!error && data) {
+      setOrders(data as Order[]);
+    }
+    setLoading(false);
+  }
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       const email = data.session?.user.email;
@@ -57,19 +70,9 @@ export default function AdminOrdersPage() {
     });
   }, [router]);
 
-  async function loadOrders() {
-    const { data, error } = await supabase
-      .from("orders")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (!error && data) {
-      setOrders(data as Order[]);
-    }
-    setLoading(false);
-  }
-
   async function updateStatus(orderId: string, newStatus: string) {
+    const order = orders.find((o) => o.id === orderId);
+
     await supabase
       .from("orders")
       .update({ status: newStatus })
@@ -77,6 +80,19 @@ export default function AdminOrdersPage() {
     setOrders((prev) =>
       prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o)),
     );
+
+    if (order && ["confirmed", "shipped", "cancelled"].includes(newStatus)) {
+      fetch("/api/telegram/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: buildOrderStatusMessage({
+            fullName: order.full_name,
+            status: newStatus,
+          }),
+        }),
+      });
+    }
   }
 
   async function toggleCompleted(orderId: string, current: boolean) {

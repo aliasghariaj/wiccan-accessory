@@ -47,6 +47,7 @@ export default function AdminPage() {
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
   const [color, setColor] = useState("");
   const [colorEn, setColorEn] = useState("");
+  const [makerTelegram, setMakerTelegram] = useState("");
   const [priceValue, setPriceValue] = useState("");
   const [realm, setRealm] = useState("Wiccan");
   const [type, setType] = useState(typeOptions[0]);
@@ -120,6 +121,7 @@ export default function AdminPage() {
       materials_en: translateMaterialsToEnglish(selectedMaterials),
       color,
       color_en: colorEn || null,
+      maker_telegram: makerTelegram || null,
       price_value: Number(priceValue),
       realm,
       type: type.label,
@@ -141,6 +143,7 @@ export default function AdminPage() {
       setDescriptionEn("");
       setColor("");
       setColorEn("");
+      setMakerTelegram("");
       setPriceValue("");
       setImageFile(null);
       setFeatured(false);
@@ -291,6 +294,19 @@ export default function AdminPage() {
                 value={colorEn}
                 onChange={(e) => setColorEn(e.target.value)}
                 placeholder="e.g. Black, Gold, Silver..."
+                className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm text-gray-400">
+                آیدی تلگرام سازنده‌ی این محصول <span className="text-xs text-gray-500">(اختیاری — اگه خالی بذاری، آیدی پیش‌فرض که توی تنظیمات سایت هست استفاده می‌شه)</span>
+              </label>
+              <input
+                dir="ltr"
+                value={makerTelegram}
+                onChange={(e) => setMakerTelegram(e.target.value)}
+                placeholder="مثلاً orkideh_wiccan (بدون @)"
                 className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white focus:border-yellow-600 focus:outline-none"
               />
             </div>
