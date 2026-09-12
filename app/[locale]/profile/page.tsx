@@ -68,7 +68,13 @@ export default function ProfilePage() {
     const { data: sessionData } = await supabase.auth.getSession();
     const userId = sessionData.session?.user.id;
 
-    const { error } = await supabase
+    if (!userId) {
+      setMessage(`${t("saveError")}: session not found, please log in again`);
+      setSaving(false);
+      return;
+    }
+
+    const { data, error } = await supabase
       .from("profiles")
       .update({
         username,
@@ -78,9 +84,17 @@ export default function ProfilePage() {
         postal_address: postalAddress,
         instagram_id: instagramId,
       })
-      .eq("id", userId);
+      .eq("id", userId)
+      .select();
 
-    setMessage(error ? `${t("saveError")}: ${error.message}` : t("saveSuccess"));
+    if (error) {
+      setMessage(`${t("saveError")}: ${error.message}`);
+    } else if (!data || data.length === 0) {
+      setMessage(`${t("saveError")}: no row was updated (user id: ${userId}) — احتمالاً ردیف پروفایل برای این کاربر توی جدول وجود نداره`);
+    } else {
+      setMessage(t("saveSuccess"));
+    }
+
     setSaving(false);
   }
 
